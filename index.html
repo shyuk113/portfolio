@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>shyuk113 | Backend Developer Portfolio</title>
+<title>이성혁 | Backend Developer Portfolio</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -324,15 +324,8 @@
     background: var(--surface);
     padding: 16px 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.2s;
-  }
-
-  .trouble-header:hover {
-    background: var(--surface2);
+    gap: 10px;
   }
 
   .trouble-title {
@@ -353,21 +346,10 @@
     border: 1px solid rgba(74,222,128,0.2);
   }
 
-  .trouble-arrow {
-    color: var(--text-muted);
-    font-size: 12px;
-    transition: transform 0.2s;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
   .trouble-body {
-    display: none;
+    display: block;
     background: var(--surface2);
     border-top: 1px solid var(--border);
-  }
-
-  .trouble-body.open {
-    display: block;
   }
 
   .trouble-step {
@@ -455,11 +437,11 @@
   <!-- 헤더 -->
   <header>
     <div class="header-tag">Backend Developer</div>
-    <h1>shyuk<span>113</span></h1>
+    <h1>이<span>성혁</span></h1>
     <p class="subtitle">도메인 중심 설계와 문제 해결을 즐기는 Java/Spring 백엔드 개발자입니다.</p>
     <div class="contact-links">
       <a class="contact-link" href="https://github.com/shyuk113" target="_blank">⌥ github.com/shyuk113</a>
-      <a class="contact-link" href="mailto:shyuk113@gmail.com">✉ shyuk113@gmail.com</a>
+      <a class="contact-link" href="mailto:danial2569@gmail.com">✉ danial2569@gmail.com</a>
     </div>
   </header>
 
@@ -471,6 +453,9 @@
         <div class="stack-category">Language</div>
         <div class="stack-items">
           <span class="badge badge-green">Java 21</span>
+          <span class="badge badge-blue">Python</span>
+          <span class="badge badge-gray">C</span>
+          <span class="badge badge-gray">C++</span>
         </div>
       </div>
       <div class="stack-row">
@@ -540,7 +525,7 @@
           <li><div><strong>글로벌 예외 처리</strong> — <code>@ControllerAdvice</code>로 커스텀 예외 계층 구성, 비즈니스 상황에 맞는 HTTP 상태 코드 응답</div></li>
           <li><div><strong>입력값 검증</strong> — <code>@Valid</code> + Bean Validation으로 요청 DTO 검증, <code>MethodArgumentNotValidException</code> 핸들러로 400 응답</div></li>
         </ul>
-        <a class="github-link" href="https://github.com/shyuk113" target="_blank">⌥ GitHub 바로가기</a>
+        <a class="github-link" href="https://github.com/이성혁" target="_blank">⌥ GitHub 바로가기</a>
       </div>
     </div>
 
@@ -585,12 +570,12 @@
 
     <!-- 1 -->
     <div class="trouble-card">
-      <div class="trouble-header" onclick="toggle(this)">
+      <div class="trouble-header">
         <div class="trouble-title">
           <span class="trouble-tag">동시성</span>
           선착순 쿠폰 발급 시 수량 초과 발급 문제
         </div>
-        <span class="trouble-arrow">▼</span>
+        
       </div>
       <div class="trouble-body">
         <div class="trouble-step">
@@ -614,12 +599,12 @@
 
     <!-- 2 -->
     <div class="trouble-card">
-      <div class="trouble-header" onclick="toggle(this)">
+      <div class="trouble-header">
         <div class="trouble-title">
           <span class="trouble-tag">버그</span>
           주문 시 재고가 두 번 차감되는 문제
         </div>
-        <span class="trouble-arrow">▼</span>
+        
       </div>
       <div class="trouble-body">
         <div class="trouble-step">
@@ -643,12 +628,12 @@
 
     <!-- 3 -->
     <div class="trouble-card">
-      <div class="trouble-header" onclick="toggle(this)">
+      <div class="trouble-header">
         <div class="trouble-title">
           <span class="trouble-tag">캐시</span>
           상품 수정 후 캐시에 구 데이터가 남는 문제
         </div>
-        <span class="trouble-arrow">▼</span>
+        
       </div>
       <div class="trouble-body">
         <div class="trouble-step">
@@ -672,12 +657,12 @@
 
     <!-- 4 -->
     <div class="trouble-card">
-      <div class="trouble-header" onclick="toggle(this)">
+      <div class="trouble-header">
         <div class="trouble-title">
           <span class="trouble-tag">유니코드</span>
           한글 태그 중복 허용 문제
         </div>
-        <span class="trouble-arrow">▼</span>
+        
       </div>
       <div class="trouble-body">
         <div class="trouble-step">
@@ -702,20 +687,12 @@
   </section>
 
   <footer>
-    © 2025 shyuk113 · Backend Developer · Built with ♥
+    © 2025 이성혁 · Backend Developer · Built with ♥
   </footer>
 
 </div>
 
-<script>
-  function toggle(header) {
-    const body = header.nextElementSibling;
-    const arrow = header.querySelector('.trouble-arrow');
-    const isOpen = body.classList.contains('open');
-    body.classList.toggle('open', !isOpen);
-    arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-  }
-</script>
+
 
 </body>
 </html>

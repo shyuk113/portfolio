@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shyuk113 | Backend Developer Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #4ade80;
+    --accent2: #60a5fa;
+    --accent3: #f472b6;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* 스크롤바 */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* 배경 그리드 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 상단 그라데이션 글로우 */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(74,222,128,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── 헤더 ── */
+  header {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin-bottom: 32px;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(74,222,128,0.05);
+  }
+
+  /* ── 섹션 공통 ── */
+  section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── 기술 스택 ── */
+  .stack-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .stack-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2px;
+  }
+
+  .stack-category {
+    background: var(--surface);
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+  }
+
+  .stack-items {
+    background: var(--surface);
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    border: 1px solid var(--border);
+  }
+
+  .badge {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  .badge-green { background: rgba(74,222,128,0.1); color: var(--accent); border: 1px solid rgba(74,222,128,0.2); }
+  .badge-blue { background: rgba(96,165,250,0.1); color: var(--accent2); border: 1px solid rgba(96,165,250,0.2); }
+  .badge-pink { background: rgba(244,114,182,0.1); color: var(--accent3); border: 1px solid rgba(244,114,182,0.2); }
+  .badge-gray { background: rgba(148,163,184,0.1); color: var(--text-dim); border: 1px solid rgba(148,163,184,0.2); }
+
+  /* ── 프로젝트 ── */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(74,222,128,0.3);
+  }
+
+  .project-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .project-title-area {}
+
+  .project-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .project-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+
+  .project-body {
+    padding: 24px 28px;
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feature-list li {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .feature-list li::before {
+    content: '→';
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .feature-list li strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(74,222,128,0.08);
+    color: var(--accent);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ── 트러블슈팅 ── */
+  .trouble-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .trouble-header {
+    background: var(--surface);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .trouble-header:hover {
+    background: var(--surface2);
+  }
+
+  .trouble-title {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .trouble-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: rgba(74,222,128,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(74,222,128,0.2);
+  }
+
+  .trouble-arrow {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .trouble-body {
+    display: none;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+  }
+
+  .trouble-body.open {
+    display: block;
+  }
+
+  .trouble-step {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .trouble-step:last-child {
+    border-bottom: none;
+  }
+
+  .step-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-align: center;
+    height: fit-content;
+    margin-top: 2px;
+  }
+
+  .step-problem { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .step-cause { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+  .step-solution { background: rgba(74,222,128,0.1); color: var(--accent); border: 1px solid rgba(74,222,128,0.2); }
+  .step-result { background: rgba(96,165,250,0.1); color: var(--accent2); border: 1px solid rgba(96,165,250,0.2); }
+
+  .step-content {
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ── GitHub 링크 ── */
+  .github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    transition: all 0.2s;
+  }
+
+  .github-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── 푸터 ── */
+  footer {
+    padding: 40px 0;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* 애니메이션 */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  header, section {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  section:nth-child(2) { animation-delay: 0.1s; }
+  section:nth-child(3) { animation-delay: 0.2s; }
+  section:nth-child(4) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 헤더 -->
+  <header>
+    <div class="header-tag">Backend Developer</div>
+    <h1>shyuk<span>113</span></h1>
+    <p class="subtitle">도메인 중심 설계와 문제 해결을 즐기는 Java/Spring 백엔드 개발자입니다.</p>
+    <div class="contact-links">
+      <a class="contact-link" href="https://github.com/shyuk113" target="_blank">⌥ github.com/shyuk113</a>
+      <a class="contact-link" href="mailto:shyuk113@gmail.com">✉ shyuk113@gmail.com</a>
+    </div>
+  </header>
+
+  <!-- 기술 스택 -->
+  <section>
+    <div class="section-label">Tech Stack</div>
+    <div class="stack-grid">
+      <div class="stack-row">
+        <div class="stack-category">Language</div>
+        <div class="stack-items">
+          <span class="badge badge-green">Java 21</span>
+        </div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-category">Framework</div>
+        <div class="stack-items">
+          <span class="badge badge-green">Spring Boot</span>
+          <span class="badge badge-green">Spring Security</span>
+        </div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-category">Database</div>
+        <div class="stack-items">
+          <span class="badge badge-blue">MySQL</span>
+          <span class="badge badge-pink">Redis</span>
+        </div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-category">ORM</div>
+        <div class="stack-items">
+          <span class="badge badge-blue">JPA</span>
+          <span class="badge badge-blue">QueryDSL</span>
+        </div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-category">Tools</div>
+        <div class="stack-items">
+          <span class="badge badge-gray">Git</span>
+          <span class="badge badge-gray">GitHub Actions</span>
+          <span class="badge badge-gray">Docker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 프로젝트 -->
+  <section>
+    <div class="section-label">Projects</div>
+
+    <!-- 홈쇼핑 -->
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-title-area">
+          <div class="project-num">PROJECT_01</div>
+          <div class="project-title">🛒 Home Shopping Backend</div>
+          <div class="project-desc">Spring Boot 기반 홈쇼핑 백엔드 서버 — 개인 프로젝트</div>
+        </div>
+        <div class="project-meta">
+          <span class="badge badge-gray">2025</span>
+          <span class="badge badge-gray">개인</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-stack">
+          <span class="badge badge-green">Java 21</span>
+          <span class="badge badge-green">Spring Boot</span>
+          <span class="badge badge-green">Spring Security</span>
+          <span class="badge badge-blue">JWT</span>
+          <span class="badge badge-blue">JPA</span>
+          <span class="badge badge-pink">Redis</span>
+          <span class="badge badge-blue">MySQL</span>
+        </div>
+        <ul class="feature-list">
+          <li><div><strong>JWT 기반 인증/인가</strong> — Access Token + 커스텀 예외 처리로 401/403 상태 코드 분리 응답</div></li>
+          <li><div><strong>재고 차감 동시성 처리</strong> — <code>@Lock(PESSIMISTIC_WRITE)</code>로 DB 레벨 배타적 락 적용, 3초 타임아웃 설정으로 무한 대기 방지</div></li>
+          <li><div><strong>선착순 쿠폰 발급 시스템</strong> — Redis <code>INCR</code> 원자성으로 수량 관리, <code>SADD</code>로 중복 발급 방지, DB 저장 실패 시 Redis 수동 롤백 처리</div></li>
+          <li><div><strong>상품 조회 Redis 캐싱</strong> — <code>@Cacheable</code> / <code>@CacheEvict</code>로 캐시 적용 및 무효화, 재고 변경 시 <code>@Caching</code>으로 item/itemList 캐시 동시 evict</div></li>
+          <li><div><strong>글로벌 예외 처리</strong> — <code>@ControllerAdvice</code>로 커스텀 예외 계층 구성, 비즈니스 상황에 맞는 HTTP 상태 코드 응답</div></li>
+          <li><div><strong>입력값 검증</strong> — <code>@Valid</code> + Bean Validation으로 요청 DTO 검증, <code>MethodArgumentNotValidException</code> 핸들러로 400 응답</div></li>
+        </ul>
+        <a class="github-link" href="https://github.com/shyuk113" target="_blank">⌥ GitHub 바로가기</a>
+      </div>
+    </div>
+
+    <!-- Third Tool -->
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-title-area">
+          <div class="project-num">PROJECT_02</div>
+          <div class="project-title">📚 Third Tool Backend</div>
+          <div class="project-desc">학습 카드(플래시카드) 관리 서비스 백엔드 — 팀 프로젝트</div>
+        </div>
+        <div class="project-meta">
+          <span class="badge badge-gray">2025.09</span>
+          <span class="badge badge-gray">팀</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-stack">
+          <span class="badge badge-green">Java 21</span>
+          <span class="badge badge-green">Spring Boot</span>
+          <span class="badge badge-blue">JPA</span>
+          <span class="badge badge-blue">QueryDSL</span>
+          <span class="badge badge-blue">MySQL</span>
+          <span class="badge badge-pink">Elasticsearch</span>
+          <span class="badge badge-gray">AWS S3</span>
+        </div>
+        <ul class="feature-list">
+          <li><div><strong>태그별 월간 학습 통계 조회 API</strong> — <code>UserCardEntity → Card → Deck → Tag</code> JPQL 조인으로 이번 달 태그별 학습 횟수 집계, <code>Stats</code> BC 신규 구축 및 테스트 코드 작성</div></li>
+          <li><div><strong>덱 공유 라이브러리 기능</strong> — <code>isShared</code> 필드 및 <code>originalDeck</code> 자기참조 관계 설계, 덱 공개/비공개 전환 및 카드 포함 덱 복사 기능 구현</div></li>
+          <li><div><strong>다중 태그 AND 조건 검색</strong> — 단일 태그 <code>Long</code>에서 <code>List&lt;Long&gt;</code> 복수 태그 필터링으로 확장, JPQL <code>IN</code> 조건 활용</div></li>
+          <li><div><strong>덱 이름 자동완성 검색</strong> — <code>LIKE :keyword%</code> JPQL + <code>Pageable</code>로 scope(공개/개인)별 최대 10개 결과 제한</div></li>
+          <li><div><strong>태그 서비스 리팩토링</strong> — <code>NameNormalizer</code> 유틸 도입으로 NFKC 유니코드 정규화 처리, 대소문자 무시 태그 중복 방지 로직 강화</div></li>
+        </ul>
+        <a class="github-link" href="https://github.com/Third-tool/third-tool-backend" target="_blank">⌥ GitHub 바로가기</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 트러블슈팅 -->
+  <section>
+    <div class="section-label">Trouble Shooting</div>
+
+    <!-- 1 -->
+    <div class="trouble-card">
+      <div class="trouble-header" onclick="toggle(this)">
+        <div class="trouble-title">
+          <span class="trouble-tag">동시성</span>
+          선착순 쿠폰 발급 시 수량 초과 발급 문제
+        </div>
+        <span class="trouble-arrow">▼</span>
+      </div>
+      <div class="trouble-body">
+        <div class="trouble-step">
+          <span class="step-label step-problem">문제</span>
+          <div class="step-content">선착순 쿠폰 발급 시 여러 사용자가 동시에 요청하면 수량을 초과해 발급되는 레이스 컨디션이 발생했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-cause">원인</span>
+          <div class="step-content">여러 스레드가 동시에 남은 수량을 조회하고, 각자 차감하면서 초과 발급이 발생했습니다. DB 비관적 락은 트래픽이 몰리는 쿠폰 발급 상황에서 병목이 심하게 발생할 것으로 판단했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-solution">해결</span>
+          <div class="step-content">Redis <code>INCR</code> 명령어의 단일 스레드 원자성을 활용해 수량을 관리했습니다. <code>SADD</code>로 중복 발급을 체크하고, DB 저장 실패 시 catch 블록에서 Redis를 수동 롤백하도록 처리했습니다. 또한 <code>@Transactional</code> 메서드 내부에서 Redis를 함께 사용하면 DB 롤백 시 Redis가 롤백되지 않는 문제가 있어, DB 저장 로직을 별도 <code>CouponIssueService</code>로 분리해 Spring 프록시를 통한 트랜잭션이 정상 동작하도록 했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-result">결과</span>
+          <div class="step-content">동시 요청에도 수량 초과 발급이 발생하지 않으며, DB 장애 시 Redis 상태도 정합성을 유지합니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="trouble-card">
+      <div class="trouble-header" onclick="toggle(this)">
+        <div class="trouble-title">
+          <span class="trouble-tag">버그</span>
+          주문 시 재고가 두 번 차감되는 문제
+        </div>
+        <span class="trouble-arrow">▼</span>
+      </div>
+      <div class="trouble-body">
+        <div class="trouble-step">
+          <span class="step-label step-problem">문제</span>
+          <div class="step-content">주문 요청 시 재고가 실제보다 2배 차감되는 버그가 발생했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-cause">원인</span>
+          <div class="step-content"><code>OrderService</code>에서 <code>itemService.reduceStock()</code>을 명시적으로 호출하면서, 동시에 <code>OrderItem.createOrderItem()</code> 내부에서도 <code>item.removeStock()</code>이 호출되고 있었습니다. 재고 차감이 두 곳에서 중복 실행된 것입니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-solution">해결</span>
+          <div class="step-content">도메인 객체인 <code>OrderItem.createOrderItem()</code> 내부에서 재고를 차감하는 것이 도메인 로직이 응집된 올바른 구조라 판단하고, <code>OrderService</code>의 명시적 <code>reduceStock()</code> 호출을 제거했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-result">결과</span>
+          <div class="step-content">재고가 정확히 1회만 차감되며, 도메인 로직이 엔티티에 응집된 구조를 유지했습니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="trouble-card">
+      <div class="trouble-header" onclick="toggle(this)">
+        <div class="trouble-title">
+          <span class="trouble-tag">캐시</span>
+          상품 수정 후 캐시에 구 데이터가 남는 문제
+        </div>
+        <span class="trouble-arrow">▼</span>
+      </div>
+      <div class="trouble-body">
+        <div class="trouble-step">
+          <span class="step-label step-problem">문제</span>
+          <div class="step-content">상품을 수정하거나 재고가 변경돼도 조회 시 이전 데이터가 반환되는 문제가 발생했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-cause">원인</span>
+          <div class="step-content"><code>saveItem</code>, <code>updateItem</code>, <code>deleteItem</code>에 <code>@CacheEvict</code>가 누락되어 있었고, 특히 재고 차감(<code>reduceStock</code>) 시 <code>item</code> 캐시는 evict하면서 <code>itemList</code> 캐시는 evict하지 않아 목록 조회에서 품절 전 데이터가 남아있었습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-solution">해결</span>
+          <div class="step-content"><code>@Caching</code> 어노테이션으로 <code>item</code>과 <code>itemList</code> 캐시를 동시에 evict하도록 수정했습니다. 캐시 관련 로직은 <code>ItemService</code>에서만 관리하도록 책임을 분리했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-result">결과</span>
+          <div class="step-content">상품 변경 시 관련 캐시가 즉시 무효화되어 항상 최신 데이터가 반환됩니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="trouble-card">
+      <div class="trouble-header" onclick="toggle(this)">
+        <div class="trouble-title">
+          <span class="trouble-tag">유니코드</span>
+          한글 태그 중복 허용 문제
+        </div>
+        <span class="trouble-arrow">▼</span>
+      </div>
+      <div class="trouble-body">
+        <div class="trouble-step">
+          <span class="step-label step-problem">문제</span>
+          <div class="step-content">동일한 한글 태그명이 중복 생성되는 문제가 발생했습니다. "Java"와 "java", 혹은 자모 분리된 형태가 서로 다른 태그로 인식됐습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-cause">원인</span>
+          <div class="step-content">한글 입력 방식에 따라 유니코드 표현이 달라지는 문제(자모 분리)와 대소문자 차이를 고려하지 않고 단순 문자열 비교로 중복을 체크했기 때문입니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-solution">해결</span>
+          <div class="step-content"><code>NameNormalizer</code> 유틸 클래스를 도입해 태그 저장 시 NFKC 유니코드 정규화를 적용하고, 소문자로 변환한 <code>nameKey</code>를 별도로 관리해 중복 비교에 활용했습니다.</div>
+        </div>
+        <div class="trouble-step">
+          <span class="step-label step-result">결과</span>
+          <div class="step-content">입력 방식이나 대소문자와 관계없이 동일한 의미의 태그는 중복 생성되지 않습니다.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2025 shyuk113 · Backend Developer · Built with ♥
+  </footer>
+
+</div>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const arrow = header.querySelector('.trouble-arrow');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  }
+</script>
+
+</body>
+</html>

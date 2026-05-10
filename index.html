@@ -3,452 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>이성혁 | Backend Developer Portfolio</title>
+<title>이성혁 | Backend Developer</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap');
 
   :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #1a1a24;
-    --border: #2a2a3a;
-    --accent: #4ade80;
-    --accent2: #60a5fa;
+    --bg: #08080d;
+    --surface: #0f0f17;
+    --surface2: #161620;
+    --border: #1e1e2e;
+    --border-bright: #2e2e45;
+    --accent: #00ff88;
+    --accent2: #38bdf8;
     --accent3: #f472b6;
-    --text: #e2e8f0;
-    --text-muted: #64748b;
-    --text-dim: #94a3b8;
+    --accent-dim: rgba(0,255,136,0.12);
+    --text: #e8eaf0;
+    --text-muted: #4a5068;
+    --text-dim: #8892a4;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans KR', sans-serif;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* 스크롤바 */
-  ::-webkit-scrollbar { width: 4px; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
-  /* 배경 그리드 */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 60px 60px;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
-  }
+  body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; z-index: 0; }
 
-  /* 상단 그라데이션 글로우 */
-  body::after {
-    content: '';
-    position: fixed;
-    top: -200px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(74,222,128,0.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  .glow-top { position: fixed; top: -300px; left: 50%; transform: translateX(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(0,255,136,0.06) 0%, transparent 65%); pointer-events: none; z-index: 0; }
 
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-    z-index: 1;
-  }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px; height: 56px; display: flex; align-items: center; justify-content: space-between; background: rgba(8,8,13,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); letter-spacing: 2px; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
 
-  /* ── 헤더 ── */
-  header {
-    padding: 80px 0 60px;
-    border-bottom: 1px solid var(--border);
-  }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
 
-  .header-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .hero { padding: 140px 0 80px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; opacity: 0; animation: fadeUp 0.6s ease 0.1s both; }
+  .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+  .hero-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 12vw, 120px); line-height: 0.9; letter-spacing: 2px; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.6s ease 0.2s both; }
+  .hero-name .accent { color: var(--accent); }
+  .hero-role { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text-dim); margin-bottom: 32px; opacity: 0; animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-desc { font-size: 15px; color: var(--text-dim); max-width: 480px; line-height: 1.8; margin-bottom: 40px; opacity: 0; animation: fadeUp 0.6s ease 0.4s both; }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+  .hero-links { display: flex; gap: 10px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.6s ease 0.5s both; }
+  .hero-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: 1px solid var(--border-bright); border-radius: 3px; color: var(--text-dim); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; transition: all 0.2s; }
+  .hero-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .hero-link.primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .hero-link.primary:hover { background: rgba(0,255,136,0.85); color: #000; }
+  .hero-decoration { position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--border-bright); writing-mode: vertical-rl; letter-spacing: 4px; user-select: none; opacity: 0; animation: fadeUp 0.8s ease 0.6s both; }
 
-  .header-tag::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: var(--accent);
-  }
+  section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 48px; }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); opacity: 0.5; }
+  .section-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
 
-  h1 {
-    font-size: clamp(36px, 6vw, 56px);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 16px;
-    letter-spacing: -1px;
-  }
+  .stack-grid { display: flex; flex-direction: column; gap: 2px; }
+  .stack-row { display: grid; grid-template-columns: 110px 1fr; gap: 2px; }
+  .stack-category { background: var(--surface); padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); display: flex; align-items: center; border: 1px solid var(--border); letter-spacing: 1px; }
+  .stack-items { background: var(--surface); padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border: 1px solid var(--border); }
 
-  h1 span {
-    color: var(--accent);
-  }
+  .badge { padding: 3px 10px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .badge-green { background: rgba(0,255,136,0.08); color: var(--accent); border: 1px solid rgba(0,255,136,0.2); }
+  .badge-blue { background: rgba(56,189,248,0.08); color: var(--accent2); border: 1px solid rgba(56,189,248,0.2); }
+  .badge-pink { background: rgba(244,114,182,0.08); color: var(--accent3); border: 1px solid rgba(244,114,182,0.2); }
+  .badge-gray { background: rgba(148,163,184,0.06); color: var(--text-dim); border: 1px solid rgba(148,163,184,0.15); }
 
-  .subtitle {
-    font-size: 16px;
-    color: var(--text-dim);
-    max-width: 500px;
-    margin-bottom: 32px;
-  }
+  .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 24px; transition: border-color 0.25s; position: relative; }
+  .project-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 0.25s; }
+  .project-card:hover { border-color: var(--border-bright); }
+  .project-card:hover::before { opacity: 1; }
+  .project-header { padding: 24px 28px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .project-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 1px; }
+  .project-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .project-desc { font-size: 13px; color: var(--text-dim); }
+  .project-meta { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+  .project-body { padding: 24px 28px; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
 
-  .contact-links {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+  .role-bar { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 24px; padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; border-left: 2px solid var(--accent); }
+  .role-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--accent); letter-spacing: 1.5px; flex-shrink: 0; padding-top: 2px; }
+  .role-text { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
 
-  .contact-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text-dim);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    transition: all 0.2s;
-  }
+  .sub-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .sub-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .contact-link:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(74,222,128,0.05);
-  }
+  .arch-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 16px; overflow-x: auto; margin-bottom: 24px; }
+  .arch-box svg { display: block; }
 
-  /* ── 섹션 공통 ── */
-  section {
-    padding: 64px 0;
-    border-bottom: 1px solid var(--border);
-  }
+  .erd-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); line-height: 1.9; white-space: pre; overflow-x: auto; margin-bottom: 24px; }
 
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .paar-section-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .paar-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .paar-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+  .paar-item { border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .paar-title-bar { background: var(--surface2); padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .feature-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 7px; border-radius: 2px; background: rgba(0,255,136,0.08); color: var(--accent); border: 1px solid rgba(0,255,136,0.2); letter-spacing: 1px; }
+  .paar-steps { display: grid; grid-template-columns: 1fr 1fr; }
+  .paar-step { padding: 14px 18px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+  .paar-step:nth-child(even) { border-right: none; }
+  .paar-step:nth-last-child(-n+2) { border-bottom: none; }
+  .paar-step-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.5px; margin-bottom: 6px; display: block; }
+  .label-p { color: #f87171; } .label-a1 { color: #fbbf24; } .label-a2 { color: var(--accent); } .label-r { color: var(--accent2); }
+  .paar-step code { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: rgba(0,255,136,0.07); color: var(--accent); padding: 1px 5px; border-radius: 2px; }
+  .result-highlight { color: var(--accent); font-weight: 500; }
 
-  /* ── 기술 스택 ── */
-  .stack-grid {
-    display: grid;
-    gap: 2px;
-  }
+  .links-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .github-link { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border: 1px solid var(--border-bright); border-radius: 3px; color: var(--text-muted); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; transition: all 0.2s; }
+  .github-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 
-  .stack-row {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 2px;
-  }
-
-  .stack-category {
-    background: var(--surface);
-    padding: 12px 16px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--border);
-  }
-
-  .stack-items {
-    background: var(--surface);
-    padding: 12px 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    border: 1px solid var(--border);
-  }
-
-  .badge {
-    padding: 3px 10px;
-    border-radius: 3px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 400;
-  }
-
-  .badge-green { background: rgba(74,222,128,0.1); color: var(--accent); border: 1px solid rgba(74,222,128,0.2); }
-  .badge-blue { background: rgba(96,165,250,0.1); color: var(--accent2); border: 1px solid rgba(96,165,250,0.2); }
-  .badge-pink { background: rgba(244,114,182,0.1); color: var(--accent3); border: 1px solid rgba(244,114,182,0.2); }
-  .badge-gray { background: rgba(148,163,184,0.1); color: var(--text-dim); border: 1px solid rgba(148,163,184,0.2); }
-
-  /* ── 프로젝트 ── */
-  .project-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 24px;
-    transition: border-color 0.2s;
-  }
-
-  .project-card:hover {
-    border-color: rgba(74,222,128,0.3);
-  }
-
-  .project-header {
-    padding: 24px 28px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .project-title-area {}
-
-  .project-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  .project-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
-  .project-desc {
-    font-size: 13px;
-    color: var(--text-dim);
-  }
-
-  .project-meta {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    flex-shrink: 0;
-  }
-
-  .project-body {
-    padding: 24px 28px;
-  }
-
-  .project-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 24px;
-  }
-
-  .feature-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .feature-list li {
-    display: flex;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  .feature-list li::before {
-    content: '→';
-    color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .feature-list li strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    background: rgba(74,222,128,0.08);
-    color: var(--accent);
-    padding: 1px 5px;
-    border-radius: 3px;
-  }
-
-  /* ── 트러블슈팅 ── */
-  .trouble-card {
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 16px;
-  }
-
-  .trouble-header {
-    background: var(--surface);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .trouble-title {
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .trouble-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 2px;
-    background: rgba(74,222,128,0.1);
-    color: var(--accent);
-    border: 1px solid rgba(74,222,128,0.2);
-  }
-
-  .trouble-body {
-    display: block;
-    background: var(--surface2);
-    border-top: 1px solid var(--border);
-  }
-
-  .trouble-step {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 12px;
-    font-size: 13px;
-  }
-
-  .trouble-step:last-child {
-    border-bottom: none;
-  }
-
-  .step-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    text-align: center;
-    height: fit-content;
-    margin-top: 2px;
-  }
-
+  .trouble-card { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; transition: border-color 0.2s; }
+  .trouble-card:hover { border-color: var(--border-bright); }
+  .trouble-header { background: var(--surface); padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+  .trouble-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 3px 8px; border-radius: 2px; background: rgba(0,255,136,0.08); color: var(--accent); border: 1px solid rgba(0,255,136,0.2); letter-spacing: 1px; flex-shrink: 0; }
+  .trouble-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .trouble-body { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface2); }
+  .trouble-step { padding: 16px 18px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-dim); line-height: 1.7; }
+  .trouble-step:nth-child(even) { border-right: none; }
+  .trouble-step:nth-last-child(-n+2) { border-bottom: none; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 7px; border-radius: 2px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; }
   .step-problem { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
   .step-cause { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
-  .step-solution { background: rgba(74,222,128,0.1); color: var(--accent); border: 1px solid rgba(74,222,128,0.2); }
-  .step-result { background: rgba(96,165,250,0.1); color: var(--accent2); border: 1px solid rgba(96,165,250,0.2); }
+  .step-solution { background: rgba(0,255,136,0.08); color: var(--accent); border: 1px solid rgba(0,255,136,0.2); }
+  .step-result { background: rgba(56,189,248,0.08); color: var(--accent2); border: 1px solid rgba(56,189,248,0.2); }
+  .trouble-step code { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: rgba(0,255,136,0.07); color: var(--accent); padding: 1px 5px; border-radius: 2px; }
 
-  .step-content {
-    color: var(--text-dim);
-    line-height: 1.7;
+  footer { padding: 48px 0; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; } .nav-links { display: none; }
+    .paar-steps, .trouble-body { grid-template-columns: 1fr; }
+    .paar-step:nth-child(even), .trouble-step:nth-child(even) { border-right: none; }
+    .paar-step:nth-last-child(-n+2), .trouble-step:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .paar-step:last-child, .trouble-step:last-child { border-bottom: none; }
+    .stack-row { grid-template-columns: 90px 1fr; }
+    .hero-decoration { display: none; }
   }
-
-  /* ── GitHub 링크 ── */
-  .github-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 20px;
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    transition: all 0.2s;
-  }
-
-  .github-link:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* ── 푸터 ── */
-  footer {
-    padding: 40px 0;
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  /* 애니메이션 */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  header, section {
-    animation: fadeUp 0.5s ease both;
-  }
-
-  section:nth-child(2) { animation-delay: 0.1s; }
-  section:nth-child(3) { animation-delay: 0.2s; }
-  section:nth-child(4) { animation-delay: 0.3s; }
 </style>
 </head>
 <body>
+<div class="glow-top"></div>
+
+<nav>
+  <div class="nav-logo">LEE·SEONGHYUK</div>
+  <ul class="nav-links">
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#troubleshooting">Trouble</a></li>
+  </ul>
+</nav>
 
 <div class="container">
 
-  <!-- 헤더 -->
-  <header>
-    <div class="header-tag">Backend Developer</div>
-    <h1>이<span>성혁</span></h1>
-    <p class="subtitle">도메인 중심 설계와 문제 해결을 즐기는 Java/Spring 백엔드 개발자입니다.</p>
-    <div class="contact-links">
-      <a class="contact-link" href="https://github.com/shyuk113" target="_blank">⌥ github.com/shyuk113</a>
-      <a class="contact-link" href="mailto:danial2569@gmail.com">✉ danial2569@gmail.com</a>
+  <section class="hero">
+    <div class="hero-eyebrow">Backend Developer</div>
+    <div class="hero-name"><span class="accent">이</span>성혁</div>
+    <div class="hero-role">// Java · Spring Boot · Problem Solver</div>
+    <p class="hero-desc">
+      <strong>도메인 중심 설계</strong>와 <strong>문제 해결</strong>을 즐기는<br>
+      Java/Spring 백엔드 개발자입니다.<br>
+      동시성 제어와 성능 최적화에 관심이 많습니다.
+    </p>
+    <div class="hero-links">
+      <a class="hero-link primary" href="https://github.com/shyuk113" target="_blank">⌥ GitHub</a>
+      <a class="hero-link" href="mailto:danial2569@gmail.com">✉ danial2569@gmail.com</a>
     </div>
-  </header>
+    <div class="hero-decoration">BACKEND · DEVELOPER · 2025</div>
+  </section>
 
   <!-- 기술 스택 -->
-  <section>
-    <div class="section-label">Tech Stack</div>
-    <div class="stack-grid">
+  <section id="stack">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <span class="section-title">Tech Stack</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="stack-grid reveal">
       <div class="stack-row">
         <div class="stack-category">Language</div>
         <div class="stack-items">
@@ -493,11 +233,15 @@
   </section>
 
   <!-- 프로젝트 -->
-  <section>
-    <div class="section-label">Projects</div>
+  <section id="projects">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <span class="section-title">Projects</span>
+      <div class="section-line"></div>
+    </div>
 
-    <!-- 홈쇼핑 -->
-    <div class="project-card">
+    <!-- PROJECT 01 -->
+    <div class="project-card reveal">
       <div class="project-header">
         <div class="project-title-area">
           <div class="project-num">PROJECT_01</div>
@@ -518,21 +262,109 @@
           <span class="badge badge-blue">JPA</span>
           <span class="badge badge-pink">Redis</span>
           <span class="badge badge-blue">MySQL</span>
+          <span class="badge badge-gray">Docker</span>
+          <span class="badge badge-gray">Gradle</span>
         </div>
-        <ul class="feature-list">
-          <li><div><strong>JWT 기반 인증/인가</strong> — Access Token + 커스텀 예외 처리로 401/403 상태 코드 분리 응답</div></li>
-          <li><div><strong>재고 차감 동시성 처리</strong> — <code>@Lock(PESSIMISTIC_WRITE)</code>로 DB 레벨 배타적 락 적용, 3초 타임아웃 설정으로 무한 대기 방지</div></li>
-          <li><div><strong>선착순 쿠폰 발급 시스템</strong> — Redis <code>INCR</code> 원자성으로 수량 관리, <code>SADD</code>로 중복 발급 방지, DB 저장 실패 시 Redis 수동 롤백 처리</div></li>
-          <li><div><strong>상품 조회 Redis 캐싱</strong> — <code>@Cacheable</code> / <code>@CacheEvict</code>로 캐시 적용 및 무효화, 재고 변경 시 <code>@Caching</code>으로 item/itemList 캐시 동시 evict</div></li>
-          <li><div><strong>글로벌 예외 처리</strong> — <code>@ControllerAdvice</code>로 커스텀 예외 계층 구성, 비즈니스 상황에 맞는 HTTP 상태 코드 응답</div></li>
-          <li><div><strong>입력값 검증</strong> — <code>@Valid</code> + Bean Validation으로 요청 DTO 검증, <code>MethodArgumentNotValidException</code> 핸들러로 400 응답</div></li>
-        </ul>
-        <a class="github-link" href="https://github.com/이성혁" target="_blank">⌥ GitHub 바로가기</a>
+
+        <div class="role-bar">
+          <span class="role-label">ROLE</span>
+          <span class="role-text">개인 프로젝트 — 기획 · 설계 · 개발 전체 담당 (인증, 상품, 장바구니, 주문, 쿠폰 전 도메인)</span>
+        </div>
+
+        <div class="sub-title">Architecture</div>
+        <div class="arch-box">
+          <svg viewBox="0 0 740 390" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:520px;">
+            <defs>
+              <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <!-- Client -->
+            <rect x="295" y="12" width="150" height="36" rx="5" fill="#1a1a2e" stroke="#2e2e45" stroke-width="1"/>
+            <text x="370" y="35" text-anchor="middle" font-size="12" fill="#8892a4" font-family="JetBrains Mono,monospace">Client (HTTP)</text>
+            <line x1="370" y1="48" x2="370" y2="72" stroke="#00ff88" stroke-width="1" marker-end="url(#a1)"/>
+            <!-- Security -->
+            <rect x="215" y="72" width="310" height="44" rx="5" fill="#1a1a2e" stroke="#534AB7" stroke-width="1"/>
+            <text x="370" y="90" text-anchor="middle" font-size="12" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Spring Security + JWT</text>
+            <text x="370" y="107" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">인증/인가 · 401/403 분리 응답</text>
+            <line x1="370" y1="116" x2="370" y2="138" stroke="#00ff88" stroke-width="1" marker-end="url(#a1)"/>
+            <!-- Controller -->
+            <rect x="20" y="138" width="700" height="36" rx="5" fill="#0d1f2d" stroke="#185FA5" stroke-width="1"/>
+            <text x="370" y="161" text-anchor="middle" font-size="11" fill="#38bdf8" font-family="JetBrains Mono,monospace">Controller · Auth / Member / Item / Cart / Order / Coupon</text>
+            <line x1="370" y1="174" x2="370" y2="196" stroke="#00ff88" stroke-width="1" marker-end="url(#a1)"/>
+            <!-- Service -->
+            <rect x="20" y="196" width="700" height="44" rx="5" fill="#0d2e1f" stroke="#0F6E56" stroke-width="1.5"/>
+            <text x="370" y="214" text-anchor="middle" font-size="12" fill="#1D9E75" font-weight="600" font-family="JetBrains Mono,monospace">Service Layer</text>
+            <text x="370" y="230" text-anchor="middle" font-size="10" fill="#5DCAA5" font-family="JetBrains Mono,monospace">비즈니스 로직 · 동시성 제어 · @Cacheable / @CacheEvict</text>
+            <!-- Three branches -->
+            <line x1="150" y1="240" x2="110" y2="280" stroke="#2e2e45" stroke-width="1" marker-end="url(#a1)"/>
+            <line x1="370" y1="240" x2="370" y2="280" stroke="#2e2e45" stroke-width="1" marker-end="url(#a1)"/>
+            <line x1="590" y1="240" x2="630" y2="280" stroke="#2e2e45" stroke-width="1" marker-end="url(#a1)"/>
+            <!-- JPA -->
+            <rect x="20" y="280" width="180" height="44" rx="5" fill="#0d1f2d" stroke="#185FA5" stroke-width="1"/>
+            <text x="110" y="298" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="600" font-family="JetBrains Mono,monospace">JPA Repository</text>
+            <text x="110" y="314" text-anchor="middle" font-size="10" fill="#4a5068" font-family="JetBrains Mono,monospace">비관적 락 · JPQL</text>
+            <!-- Redis -->
+            <rect x="280" y="280" width="180" height="44" rx="5" fill="#2d1020" stroke="#993556" stroke-width="1"/>
+            <text x="370" y="298" text-anchor="middle" font-size="11" fill="#f472b6" font-weight="600" font-family="JetBrains Mono,monospace">Redis</text>
+            <text x="370" y="314" text-anchor="middle" font-size="10" fill="#72243e" font-family="JetBrains Mono,monospace">INCR · SADD · Cacheable</text>
+            <!-- ControllerAdvice -->
+            <rect x="540" y="280" width="180" height="44" rx="5" fill="#2d2000" stroke="#854F0B" stroke-width="1"/>
+            <text x="630" y="298" text-anchor="middle" font-size="11" fill="#EF9F27" font-weight="600" font-family="JetBrains Mono,monospace">@ControllerAdvice</text>
+            <text x="630" y="314" text-anchor="middle" font-size="10" fill="#633806" font-family="JetBrains Mono,monospace">글로벌 예외 처리</text>
+            <!-- MySQL -->
+            <line x1="110" y1="324" x2="110" y2="350" stroke="#2e2e45" stroke-width="1" marker-end="url(#a1)"/>
+            <rect x="20" y="350" width="180" height="30" rx="5" fill="#1a1a2e" stroke="#2e2e45" stroke-width="1"/>
+            <text x="110" y="370" text-anchor="middle" font-size="11" fill="#8892a4" font-family="JetBrains Mono,monospace">H2 (dev) / MySQL</text>
+          </svg>
+        </div>
+
+        <div class="sub-title">ERD</div>
+        <div class="erd-box"><span style="color:var(--accent)">Member</span> ──── <span style="color:var(--accent2)">Cart</span> ──── <span style="color:var(--accent2)">CartItem</span> ──── <span style="color:var(--accent)">Item</span>
+   │                                     │
+   └──── <span style="color:var(--accent2)">Order</span> ──── <span style="color:var(--accent2)">OrderItem</span> ─────┘
+   │
+   └──── <span style="color:var(--accent2)">MemberCoupon</span> ──── <span style="color:var(--accent)">Coupon</span></div>
+
+        <div class="paar-section-title">Key Implementations (PAAR)</div>
+        <div class="paar-list">
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">CONCURRENCY</span>선착순 쿠폰 발급 — 수량 초과 방지</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>동시 요청 시 쿠폰 수량 초과 발급되는 레이스 컨디션 발생</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>다수 스레드 동시 수량 조회 후 각자 차감 → DB 비관적 락은 트래픽 폭증 시 병목 심각</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span>Redis <code>INCR</code> 원자성으로 수량 관리, <code>SADD</code> 중복 방지. DB 실패 시 catch에서 Redis 롤백. <code>CouponIssueService</code> 분리로 트랜잭션 보장</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>동시 요청에도 수량 초과 발급 <span class="result-highlight">0건</span>, DB 장애 시 Redis 정합성 유지</div>
+            </div>
+          </div>
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">CACHE</span>상품 조회 Redis 캐싱 — 캐시 정합성 확보</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>상품 수정·재고 변경 후에도 캐시된 구 데이터가 반환되는 문제</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span><code>@CacheEvict</code> 누락, 재고 차감 시 <code>itemList</code> 캐시 미처리</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span><code>@Caching</code>으로 <code>item</code>/<code>itemList</code> 동시 evict, 캐시 책임 <code>ItemService</code>에 집중</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>상품 변경 시 캐시 <span class="result-highlight">즉시 무효화</span>, 항상 최신 데이터 반환 보장</div>
+            </div>
+          </div>
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">AUTH</span>JWT 인증/인가 — 예외 처리 구조화</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>인증/인가 실패 시 HTTP 상태 코드 불명확, 클라이언트 처리 어려움</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>401(미인증)과 403(권한 없음)을 구분하지 않고 동일하게 처리</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span>커스텀 예외 계층 구성, <code>@ControllerAdvice</code>로 상황별 <span class="result-highlight">401/403</span> 분리 응답</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>인증 오류 상태 코드 명확 분리, 클라이언트 에러 핸들링 <span class="result-highlight">일관성 확보</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="links-row">
+          <a class="github-link" href="https://github.com/shyuk113/home-shopping-backend" target="_blank">⌥ GitHub 바로가기</a>
+        </div>
       </div>
     </div>
 
-    <!-- Third Tool -->
-    <div class="project-card">
+    <!-- PROJECT 02 -->
+    <div class="project-card reveal">
       <div class="project-header">
         <div class="project-title-area">
           <div class="project-num">PROJECT_02</div>
@@ -554,147 +386,203 @@
           <span class="badge badge-pink">Elasticsearch</span>
           <span class="badge badge-gray">AWS S3</span>
         </div>
-        <ul class="feature-list">
-          <li><div><strong>태그별 월간 학습 통계 조회 API</strong> — <code>UserCardEntity → Card → Deck → Tag</code> JPQL 조인으로 이번 달 태그별 학습 횟수 집계, <code>Stats</code> BC 신규 구축 및 테스트 코드 작성</div></li>
-          <li><div><strong>덱 공유 라이브러리 기능</strong> — <code>isShared</code> 필드 및 <code>originalDeck</code> 자기참조 관계 설계, 덱 공개/비공개 전환 및 카드 포함 덱 복사 기능 구현</div></li>
-          <li><div><strong>다중 태그 AND 조건 검색</strong> — 단일 태그 <code>Long</code>에서 <code>List&lt;Long&gt;</code> 복수 태그 필터링으로 확장, JPQL <code>IN</code> 조건 활용</div></li>
-          <li><div><strong>덱 이름 자동완성 검색</strong> — <code>LIKE :keyword%</code> JPQL + <code>Pageable</code>로 scope(공개/개인)별 최대 10개 결과 제한</div></li>
-          <li><div><strong>태그 서비스 리팩토링</strong> — <code>NameNormalizer</code> 유틸 도입으로 NFKC 유니코드 정규화 처리, 대소문자 무시 태그 중복 방지 로직 강화</div></li>
-        </ul>
-        <a class="github-link" href="https://github.com/Third-tool/third-tool-backend" target="_blank">⌥ GitHub 바로가기</a>
+
+        <div class="role-bar">
+          <span class="role-label">ROLE</span>
+          <span class="role-text">담당 구현 (PR #113) — Stats BC 신규 구축 · 덱 공유 라이브러리 · 다중 태그 AND 검색 · 덱 이름 자동완성 · 태그 서비스 리팩토링 (NFKC 정규화)</span>
+        </div>
+
+        <div class="sub-title">Architecture (담당 영역 강조)</div>
+        <div class="arch-box">
+          <svg viewBox="0 0 740 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:520px;">
+            <defs>
+              <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <!-- Client -->
+            <rect x="295" y="10" width="150" height="34" rx="5" fill="#1a1a2e" stroke="#2e2e45" stroke-width="1"/>
+            <text x="370" y="32" text-anchor="middle" font-size="12" fill="#8892a4" font-family="JetBrains Mono,monospace">Client</text>
+            <line x1="370" y1="44" x2="370" y2="64" stroke="#00ff88" stroke-width="1" marker-end="url(#a2)"/>
+            <!-- Controller -->
+            <rect x="20" y="64" width="700" height="34" rx="5" fill="#0d1f2d" stroke="#185FA5" stroke-width="1"/>
+            <text x="370" y="86" text-anchor="middle" font-size="11" fill="#38bdf8" font-family="JetBrains Mono,monospace">Controller · Deck / Card / Tag / Stats / User</text>
+            <line x1="370" y1="98" x2="370" y2="116" stroke="#00ff88" stroke-width="1" marker-end="url(#a2)"/>
+            <!-- PR label -->
+            <text x="28" y="130" font-size="9" fill="#EF9F27" font-family="JetBrains Mono,monospace">▼ PR #113 담당 구현 영역</text>
+            <line x1="28" y1="134" x2="712" y2="134" stroke="#EF9F27" stroke-width="0.5" stroke-dasharray="4 3"/>
+            <!-- Service -->
+            <rect x="20" y="140" width="700" height="44" rx="5" fill="#0d2e1f" stroke="#0F6E56" stroke-width="1.5"/>
+            <text x="370" y="158" text-anchor="middle" font-size="12" fill="#1D9E75" font-weight="600" font-family="JetBrains Mono,monospace">Service Layer (담당: Stats / Deck Share / Tag / Search)</text>
+            <text x="370" y="174" text-anchor="middle" font-size="10" fill="#5DCAA5" font-family="JetBrains Mono,monospace">태그 통계 · 덱 공유/복사 · 다중태그 AND 검색 · 자동완성 · NFKC 정규화</text>
+            <!-- Arrows -->
+            <line x1="100" y1="184" x2="80" y2="232" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <line x1="255" y1="184" x2="235" y2="232" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <line x1="490" y1="184" x2="490" y2="232" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <line x1="645" y1="184" x2="665" y2="232" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <!-- 4 boxes -->
+            <rect x="20" y="232" width="150" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="95" y="252" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Stats BC</text>
+            <text x="95" y="268" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">월간 학습 통계</text>
+            <text x="95" y="280" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">JPQL 집계</text>
+
+            <rect x="180" y="232" width="150" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="255" y="252" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Deck Share</text>
+            <text x="255" y="268" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">공개/비공개</text>
+            <text x="255" y="280" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">자기참조 관계</text>
+
+            <rect x="410" y="232" width="150" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="485" y="252" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Tag Service</text>
+            <text x="485" y="268" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">NFKC 정규화</text>
+            <text x="485" y="280" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">중복 방지</text>
+
+            <rect x="570" y="232" width="150" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="645" y="252" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Search</text>
+            <text x="645" y="268" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">AND 다중 태그</text>
+            <text x="645" y="280" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">이름 자동완성</text>
+
+            <!-- Arrows to infra -->
+            <line x1="255" y1="284" x2="230" y2="340" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <line x1="485" y1="284" x2="420" y2="340" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <line x1="645" y1="284" x2="590" y2="340" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+
+            <!-- JPA + QueryDSL -->
+            <rect x="120" y="340" width="200" height="40" rx="5" fill="#0d1f2d" stroke="#185FA5" stroke-width="1"/>
+            <text x="220" y="356" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="600" font-family="JetBrains Mono,monospace">JPA + QueryDSL</text>
+            <text x="220" y="372" text-anchor="middle" font-size="10" fill="#4a5068" font-family="JetBrains Mono,monospace">JPQL IN · Pageable</text>
+
+            <!-- NameNormalizer -->
+            <rect x="340" y="340" width="160" height="40" rx="5" fill="#1e1500" stroke="#854F0B" stroke-width="1"/>
+            <text x="420" y="356" text-anchor="middle" font-size="11" fill="#EF9F27" font-weight="600" font-family="JetBrains Mono,monospace">NameNormalizer</text>
+            <text x="420" y="372" text-anchor="middle" font-size="10" fill="#633806" font-family="JetBrains Mono,monospace">유니코드 정규화</text>
+
+            <!-- Elasticsearch -->
+            <rect x="520" y="340" width="160" height="40" rx="5" fill="#2d1020" stroke="#993556" stroke-width="1"/>
+            <text x="600" y="356" text-anchor="middle" font-size="11" fill="#f472b6" font-weight="600" font-family="JetBrains Mono,monospace">Elasticsearch</text>
+            <text x="600" y="372" text-anchor="middle" font-size="10" fill="#72243e" font-family="JetBrains Mono,monospace">전문 검색</text>
+
+            <!-- MySQL -->
+            <line x1="220" y1="380" x2="220" y2="406" stroke="#2e2e45" stroke-width="1" marker-end="url(#a2)"/>
+            <rect x="120" y="406" width="200" height="18" rx="4" fill="#1a1a2e" stroke="#2e2e45" stroke-width="1"/>
+            <text x="220" y="419" text-anchor="middle" font-size="10" fill="#8892a4" font-family="JetBrains Mono,monospace">MySQL (+ AWS S3)</text>
+          </svg>
+        </div>
+
+        <div class="paar-section-title">Key Implementations (PAAR)</div>
+        <div class="paar-list">
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">UNICODE</span>한글 태그 중복 생성 — NFKC 정규화로 해결</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>동일한 한글 태그가 자모 분리·대소문자 차이로 서로 다른 태그로 중복 생성</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>한글 입력 방식에 따라 유니코드 표현 상이(자모 분리) + 단순 문자열 비교로 중복 체크</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span><code>NameNormalizer</code> 유틸 도입, NFKC 유니코드 정규화 + 소문자 <code>nameKey</code>로 중복 비교</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>입력 방식·대소문자 무관하게 <span class="result-highlight">동일 의미 태그 중복 생성 완전 차단</span></div>
+            </div>
+          </div>
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">SEARCH</span>다중 태그 AND 조건 검색 — 확장성 개선</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>단일 태그만 필터링 가능, 복합 조건 검색 불가로 사용자 니즈 미충족</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>기존 <code>Long</code> 단일 파라미터 구조로는 AND 다중 조건 처리 불가</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span><code>List&lt;Long&gt;</code>으로 확장, JPQL <code>IN</code> 조건 AND 검색 구현</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>복합 태그 조건 검색 지원, <span class="result-highlight">검색 정확도 향상</span> 및 유연한 필터링 제공</div>
+            </div>
+          </div>
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">SHARE</span>덱 공유 라이브러리 — 자기참조 관계 설계</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>사용자 간 학습 덱 공유 기능 부재, 카드 포함 덱 복사 시 정합성 문제</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>공개/비공개 전환 + 원본 덱 추적을 위한 엔티티 관계 설계 필요</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span><code>isShared</code> 필드 + <code>originalDeck</code> 자기참조 관계 설계, 카드 포함 복사 기능 구현</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>공유 라이브러리 기능 완성, <span class="result-highlight">원본 추적 정합성 유지</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="links-row">
+          <a class="github-link" href="https://github.com/Third-tool/third-tool-backend/pull/113" target="_blank">⌥ PR #113 바로가기</a>
+          <a class="github-link" href="https://github.com/Third-tool/third-tool-backend" target="_blank">⌥ GitHub 바로가기</a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- 트러블슈팅 -->
-  <section>
-    <div class="section-label">Trouble Shooting</div>
+  <section id="troubleshooting">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <span class="section-title">Trouble Shooting</span>
+      <div class="section-line"></div>
+    </div>
 
-    <!-- 1 -->
-    <div class="trouble-card">
+    <div class="trouble-card reveal">
       <div class="trouble-header">
-        <div class="trouble-title">
-          <span class="trouble-tag">동시성</span>
-          선착순 쿠폰 발급 시 수량 초과 발급 문제
-        </div>
-        
+        <span class="trouble-tag">동시성</span>
+        <span class="trouble-title">선착순 쿠폰 발급 시 수량 초과 발급 문제</span>
       </div>
       <div class="trouble-body">
-        <div class="trouble-step">
-          <span class="step-label step-problem">문제</span>
-          <div class="step-content">선착순 쿠폰 발급 시 여러 사용자가 동시에 요청하면 수량을 초과해 발급되는 레이스 컨디션이 발생했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-cause">원인</span>
-          <div class="step-content">여러 스레드가 동시에 남은 수량을 조회하고, 각자 차감하면서 초과 발급이 발생했습니다. DB 비관적 락은 트래픽이 몰리는 쿠폰 발급 상황에서 병목이 심하게 발생할 것으로 판단했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-solution">해결</span>
-          <div class="step-content">Redis <code>INCR</code> 명령어의 단일 스레드 원자성을 활용해 수량을 관리했습니다. <code>SADD</code>로 중복 발급을 체크하고, DB 저장 실패 시 catch 블록에서 Redis를 수동 롤백하도록 처리했습니다. 또한 <code>@Transactional</code> 메서드 내부에서 Redis를 함께 사용하면 DB 롤백 시 Redis가 롤백되지 않는 문제가 있어, DB 저장 로직을 별도 <code>CouponIssueService</code>로 분리해 Spring 프록시를 통한 트랜잭션이 정상 동작하도록 했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-result">결과</span>
-          <div class="step-content">동시 요청에도 수량 초과 발급이 발생하지 않으며, DB 장애 시 Redis 상태도 정합성을 유지합니다.</div>
-        </div>
+        <div class="trouble-step"><span class="step-label step-problem">PROBLEM</span>동시 요청 시 쿠폰 수량을 초과해 발급되는 레이스 컨디션 발생</div>
+        <div class="trouble-step"><span class="step-label step-cause">ANALYZE</span>다수 스레드가 동시에 수량 조회 후 차감 → DB 비관적 락은 트래픽 폭증 시 병목 심각할 것으로 판단</div>
+        <div class="trouble-step"><span class="step-label step-solution">ACTION</span>Redis <code>INCR</code> 원자성으로 수량 관리, <code>SADD</code>로 중복 방지. DB 실패 시 catch에서 Redis 수동 롤백. <code>CouponIssueService</code> 분리로 Spring 프록시 트랜잭션 정상 동작 보장</div>
+        <div class="trouble-step"><span class="step-label step-result">RESULT</span>동시 요청에도 수량 초과 발급 <strong style="color:var(--accent)">0건</strong>. DB 장애 시에도 Redis 상태 정합성 유지</div>
       </div>
     </div>
 
-    <!-- 2 -->
-    <div class="trouble-card">
+    <div class="trouble-card reveal">
       <div class="trouble-header">
-        <div class="trouble-title">
-          <span class="trouble-tag">버그</span>
-          주문 시 재고가 두 번 차감되는 문제
-        </div>
-        
+        <span class="trouble-tag">버그</span>
+        <span class="trouble-title">주문 시 재고가 두 번 차감되는 문제</span>
       </div>
       <div class="trouble-body">
-        <div class="trouble-step">
-          <span class="step-label step-problem">문제</span>
-          <div class="step-content">주문 요청 시 재고가 실제보다 2배 차감되는 버그가 발생했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-cause">원인</span>
-          <div class="step-content"><code>OrderService</code>에서 <code>itemService.reduceStock()</code>을 명시적으로 호출하면서, 동시에 <code>OrderItem.createOrderItem()</code> 내부에서도 <code>item.removeStock()</code>이 호출되고 있었습니다. 재고 차감이 두 곳에서 중복 실행된 것입니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-solution">해결</span>
-          <div class="step-content">도메인 객체인 <code>OrderItem.createOrderItem()</code> 내부에서 재고를 차감하는 것이 도메인 로직이 응집된 올바른 구조라 판단하고, <code>OrderService</code>의 명시적 <code>reduceStock()</code> 호출을 제거했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-result">결과</span>
-          <div class="step-content">재고가 정확히 1회만 차감되며, 도메인 로직이 엔티티에 응집된 구조를 유지했습니다.</div>
-        </div>
+        <div class="trouble-step"><span class="step-label step-problem">PROBLEM</span>주문 요청 시 재고가 실제보다 2배 차감되는 버그 발생</div>
+        <div class="trouble-step"><span class="step-label step-cause">ANALYZE</span><code>OrderService</code>의 <code>reduceStock()</code> 명시적 호출과 <code>OrderItem.createOrderItem()</code> 내부 <code>removeStock()</code>이 중복 실행</div>
+        <div class="trouble-step"><span class="step-label step-solution">ACTION</span>도메인 로직 응집 원칙에 따라 엔티티 내부 재고 차감을 정규 위치로 판단, <code>OrderService</code>의 명시적 <code>reduceStock()</code> 호출 제거</div>
+        <div class="trouble-step"><span class="step-label step-result">RESULT</span>재고 정확히 <strong style="color:var(--accent)">1회만 차감</strong>. 도메인 로직이 엔티티에 응집된 구조 유지</div>
       </div>
     </div>
 
-    <!-- 3 -->
-    <div class="trouble-card">
+    <div class="trouble-card reveal">
       <div class="trouble-header">
-        <div class="trouble-title">
-          <span class="trouble-tag">캐시</span>
-          상품 수정 후 캐시에 구 데이터가 남는 문제
-        </div>
-        
+        <span class="trouble-tag">캐시</span>
+        <span class="trouble-title">상품 수정 후 캐시에 구 데이터가 남는 문제</span>
       </div>
       <div class="trouble-body">
-        <div class="trouble-step">
-          <span class="step-label step-problem">문제</span>
-          <div class="step-content">상품을 수정하거나 재고가 변경돼도 조회 시 이전 데이터가 반환되는 문제가 발생했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-cause">원인</span>
-          <div class="step-content"><code>saveItem</code>, <code>updateItem</code>, <code>deleteItem</code>에 <code>@CacheEvict</code>가 누락되어 있었고, 특히 재고 차감(<code>reduceStock</code>) 시 <code>item</code> 캐시는 evict하면서 <code>itemList</code> 캐시는 evict하지 않아 목록 조회에서 품절 전 데이터가 남아있었습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-solution">해결</span>
-          <div class="step-content"><code>@Caching</code> 어노테이션으로 <code>item</code>과 <code>itemList</code> 캐시를 동시에 evict하도록 수정했습니다. 캐시 관련 로직은 <code>ItemService</code>에서만 관리하도록 책임을 분리했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-result">결과</span>
-          <div class="step-content">상품 변경 시 관련 캐시가 즉시 무효화되어 항상 최신 데이터가 반환됩니다.</div>
-        </div>
+        <div class="trouble-step"><span class="step-label step-problem">PROBLEM</span>상품 수정·재고 변경 후 조회 시 이전 데이터가 반환되는 문제</div>
+        <div class="trouble-step"><span class="step-label step-cause">ANALYZE</span><code>saveItem</code>, <code>updateItem</code>에 <code>@CacheEvict</code> 누락. 재고 차감 시 <code>itemList</code> 캐시 미처리</div>
+        <div class="trouble-step"><span class="step-label step-solution">ACTION</span><code>@Caching</code>으로 <code>item</code>/<code>itemList</code> 동시 evict. 캐시 책임을 <code>ItemService</code>에 집중</div>
+        <div class="trouble-step"><span class="step-label step-result">RESULT</span>상품 변경 시 캐시 <strong style="color:var(--accent)">즉시 무효화</strong>. 항상 최신 데이터 반환 보장</div>
       </div>
     </div>
 
-    <!-- 4 -->
-    <div class="trouble-card">
+    <div class="trouble-card reveal">
       <div class="trouble-header">
-        <div class="trouble-title">
-          <span class="trouble-tag">유니코드</span>
-          한글 태그 중복 허용 문제
-        </div>
-        
+        <span class="trouble-tag">유니코드</span>
+        <span class="trouble-title">한글 태그 중복 생성 문제 — NFKC 정규화로 해결</span>
       </div>
       <div class="trouble-body">
-        <div class="trouble-step">
-          <span class="step-label step-problem">문제</span>
-          <div class="step-content">동일한 한글 태그명이 중복 생성되는 문제가 발생했습니다. "Java"와 "java", 혹은 자모 분리된 형태가 서로 다른 태그로 인식됐습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-cause">원인</span>
-          <div class="step-content">한글 입력 방식에 따라 유니코드 표현이 달라지는 문제(자모 분리)와 대소문자 차이를 고려하지 않고 단순 문자열 비교로 중복을 체크했기 때문입니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-solution">해결</span>
-          <div class="step-content"><code>NameNormalizer</code> 유틸 클래스를 도입해 태그 저장 시 NFKC 유니코드 정규화를 적용하고, 소문자로 변환한 <code>nameKey</code>를 별도로 관리해 중복 비교에 활용했습니다.</div>
-        </div>
-        <div class="trouble-step">
-          <span class="step-label step-result">결과</span>
-          <div class="step-content">입력 방식이나 대소문자와 관계없이 동일한 의미의 태그는 중복 생성되지 않습니다.</div>
-        </div>
+        <div class="trouble-step"><span class="step-label step-problem">PROBLEM</span>동일한 한글 태그명이 자모 분리·대소문자 차이로 서로 다른 태그로 중복 생성</div>
+        <div class="trouble-step"><span class="step-label step-cause">ANALYZE</span>한글 입력 방식에 따라 유니코드 표현 상이(자모 분리) + 대소문자 미고려 단순 문자열 비교</div>
+        <div class="trouble-step"><span class="step-label step-solution">ACTION</span><code>NameNormalizer</code> 유틸 도입, NFKC 유니코드 정규화 + 소문자 <code>nameKey</code>로 중복 비교</div>
+        <div class="trouble-step"><span class="step-label step-result">RESULT</span>입력 방식·대소문자 무관하게 <strong style="color:var(--accent)">동일 의미 태그 중복 생성 완전 차단</strong></div>
       </div>
     </div>
 
   </section>
 
-  <footer>
-    © 2025 이성혁 · Backend Developer · Built with ♥
-  </footer>
+  <footer>© 2025 <span>이성혁</span> · Backend Developer · Built with <span>♥</span></footer>
 
 </div>
 
-
-
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>

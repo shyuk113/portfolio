@@ -149,6 +149,61 @@
     .stack-row { grid-template-columns: 90px 1fr; }
     .hero-decoration { display: none; }
   }
+  /* === POLLEN APP === */
+  .pollen-app { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .pollen-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .pollen-header-left { display: flex; align-items: center; gap: 14px; }
+  .pollen-logo { font-size: 28px; }
+  .pollen-title { font-size: 16px; font-weight: 700; color: var(--text); }
+  .pollen-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 1px; margin-top: 2px; }
+  .pollen-location { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); }
+  .pollen-loc-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; box-shadow: 0 0 6px var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+  .pollen-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+  .pollen-card-item { background: var(--surface); padding: 16px 16px 14px; }
+  .pollen-card-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  .pollen-card-gauge { background: var(--surface2); border-radius: 2px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+  .pollen-gauge-bar { height: 100%; width: var(--fill); background: var(--color); border-radius: 2px; transition: width 1s ease; }
+  .pollen-card-value { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; }
+
+  .pollen-alert-banner { display: flex; align-items: center; gap: 10px; padding: 12px 24px; background: rgba(248,113,113,0.07); border-bottom: 1px solid rgba(248,113,113,0.15); font-size: 13px; color: var(--text-dim); }
+  .pollen-alert-icon { color: #f87171; font-size: 14px; flex-shrink: 0; }
+  .pollen-alert-banner strong { color: #f87171; }
+  .pollen-alert-time { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); flex-shrink: 0; }
+
+  .pollen-section-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; padding: 20px 24px 0; display: flex; align-items: center; gap: 10px; }
+  .pollen-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .pollen-symptom-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 24px; }
+  .symptom-btn { padding: 7px 14px; border-radius: 20px; font-size: 12px; border: 1px solid var(--border-bright); background: var(--surface2); color: var(--text-muted); cursor: pointer; transition: all 0.2s; font-family: 'Noto Sans KR', sans-serif; }
+  .symptom-btn.active { background: var(--accent-dim); border-color: rgba(0,255,136,0.4); color: var(--accent); }
+  .symptom-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .pollen-severity-row { display: flex; align-items: center; gap: 12px; padding: 4px 24px 12px; }
+  .severity-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+  .severity-dots { display: flex; gap: 6px; }
+  .severity-dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border-bright); background: var(--surface2); cursor: pointer; transition: all 0.15s; }
+  .severity-dot.active { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 6px rgba(0,255,136,0.4); }
+  .severity-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); }
+
+  .pollen-save-btn { margin: 0 24px 4px; padding: 10px 24px; background: var(--accent); color: #000; border: none; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+  .pollen-save-btn:hover { background: rgba(0,255,136,0.85); }
+  .pollen-save-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); padding: 6px 24px; min-height: 22px; }
+
+  .pollen-chart { padding: 16px 24px 24px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+  .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; height: 100%; justify-content: flex-end; }
+  .chart-bar { width: 100%; height: var(--h); background: var(--c); border-radius: 2px 2px 0 0; transition: height 0.8s ease; }
+  .chart-bar-today .chart-bar { box-shadow: 0 0 8px var(--c); }
+  .chart-day { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); }
+  .chart-bar-today .chart-day { color: var(--accent); }
+  .chart-legend { display: flex; gap: 16px; margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+
+  @media (max-width: 640px) {
+    .pollen-grid { grid-template-columns: repeat(2, 1fr); }
+    .pollen-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -160,6 +215,7 @@
     <li><a href="#stack">Stack</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#troubleshooting">Trouble</a></li>
+    <li><a href="#pollen">Pollen</a></li>
   </ul>
 </nav>
 
@@ -177,6 +233,7 @@
     <div class="hero-links">
       <a class="hero-link primary" href="https://github.com/shyuk113" target="_blank">⌥ GitHub</a>
       <a class="hero-link" href="mailto:danial2569@gmail.com">✉ danial2569@gmail.com</a>
+      <a class="hero-link" href="https://ring-plane-277.notion.site/1-API-N-1-37a0a5f7e5c2815e8fd2c2b8e0ecce9a" target="_blank">📝 Notion</a>
     </div>
     <div class="hero-decoration">BACKEND · DEVELOPER · 2026</div>
   </section>
@@ -507,10 +564,268 @@
     </div>
   </section>
 
+    <!-- PROJECT 03 -->
+    <div class="project-card reveal">
+      <div class="project-header">
+        <div class="project-title-area">
+          <div class="project-num">PROJECT_03</div>
+          <div class="project-title">🌿 Pollen Allergy Tracker</div>
+          <div class="project-desc">실시간 꽃가루 농도 조회 및 알러지 증상 기록 앱 — 개인 프로젝트</div>
+        </div>
+        <div class="project-meta">
+          <span class="badge badge-gray">2026</span>
+          <span class="badge badge-gray">개인</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-stack">
+          <span class="badge badge-green">Java 21</span>
+          <span class="badge badge-green">Spring Boot</span>
+          <span class="badge badge-blue">JPA</span>
+          <span class="badge badge-blue">MySQL</span>
+          <span class="badge badge-pink">Redis</span>
+          <span class="badge badge-gray">OpenAPI</span>
+          <span class="badge badge-gray">Docker</span>
+          <span class="badge badge-blue">JWT</span>
+        </div>
+
+        <div class="role-bar">
+          <span class="role-label">ROLE</span>
+          <span class="role-text">개인 프로젝트 — 기획 · 설계 · 개발 전체 담당 (꽃가루 데이터 수집, 증상 기록, 위치 기반 알림, 통계 분석)</span>
+        </div>
+
+        <div class="sub-title">Architecture</div>
+        <div class="arch-box">
+          <svg viewBox="0 0 740 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:520px;">
+            <defs>
+              <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <!-- External API -->
+            <rect x="20" y="10" width="200" height="34" rx="5" fill="#1e1500" stroke="#854F0B" stroke-width="1"/>
+            <text x="120" y="32" text-anchor="middle" font-size="11" fill="#EF9F27" font-family="JetBrains Mono,monospace">기상청 꽃가루 OpenAPI</text>
+            <line x1="220" y1="27" x2="280" y2="27" stroke="#00ff88" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Scheduler -->
+            <rect x="280" y="10" width="180" height="34" rx="5" fill="#0d2e1f" stroke="#0F6E56" stroke-width="1.5"/>
+            <text x="370" y="32" text-anchor="middle" font-size="11" fill="#00ff88" font-weight="600" font-family="JetBrains Mono,monospace">@Scheduled 수집기</text>
+            <line x1="370" y1="44" x2="370" y2="64" stroke="#00ff88" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Client -->
+            <rect x="540" y="10" width="180" height="34" rx="5" fill="#1a1a2e" stroke="#2e2e45" stroke-width="1"/>
+            <text x="630" y="32" text-anchor="middle" font-size="12" fill="#8892a4" font-family="JetBrains Mono,monospace">Client (HTTP)</text>
+            <line x1="630" y1="44" x2="630" y2="64" stroke="#00ff88" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Security -->
+            <rect x="480" y="64" width="220" height="36" rx="5" fill="#1a1a2e" stroke="#534AB7" stroke-width="1"/>
+            <text x="590" y="82" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Spring Security + JWT</text>
+            <text x="590" y="95" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">인증/인가 · 401/403</text>
+            <line x1="590" y1="100" x2="590" y2="120" stroke="#00ff88" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Redis Cache -->
+            <rect x="280" y="64" width="180" height="36" rx="5" fill="#2d1020" stroke="#993556" stroke-width="1"/>
+            <text x="370" y="82" text-anchor="middle" font-size="11" fill="#f472b6" font-weight="600" font-family="JetBrains Mono,monospace">Redis Cache</text>
+            <text x="370" y="96" text-anchor="middle" font-size="10" fill="#72243e" font-family="JetBrains Mono,monospace">꽃가루 데이터 TTL 캐싱</text>
+            <line x1="370" y1="100" x2="370" y2="120" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Controller -->
+            <rect x="20" y="120" width="700" height="34" rx="5" fill="#0d1f2d" stroke="#185FA5" stroke-width="1"/>
+            <text x="370" y="142" text-anchor="middle" font-size="11" fill="#38bdf8" font-family="JetBrains Mono,monospace">Controller · Pollen / Symptom / Alert / Stats / Auth</text>
+            <line x1="370" y1="154" x2="370" y2="174" stroke="#00ff88" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Service -->
+            <rect x="20" y="174" width="700" height="44" rx="5" fill="#0d2e1f" stroke="#0F6E56" stroke-width="1.5"/>
+            <text x="370" y="192" text-anchor="middle" font-size="12" fill="#1D9E75" font-weight="600" font-family="JetBrains Mono,monospace">Service Layer</text>
+            <text x="370" y="208" text-anchor="middle" font-size="10" fill="#5DCAA5" font-family="JetBrains Mono,monospace">꽃가루 등급 산출 · 증상 기록 · 위치 기반 알림 · 주간/월간 통계 집계</text>
+            <!-- Four branches -->
+            <line x1="130" y1="218" x2="100" y2="262" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <line x1="290" y1="218" x2="270" y2="262" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <line x1="450" y1="218" x2="470" y2="262" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <line x1="620" y1="218" x2="650" y2="262" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- Pollen BC -->
+            <rect x="20" y="262" width="160" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="100" y="282" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Pollen BC</text>
+            <text x="100" y="298" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">지역별 농도 조회</text>
+            <text x="100" y="310" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">위험 등급 산출</text>
+            <!-- Symptom BC -->
+            <rect x="190" y="262" width="160" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="270" y="282" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Symptom BC</text>
+            <text x="270" y="298" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">증상 기록 CRUD</text>
+            <text x="270" y="310" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">심각도 점수화</text>
+            <!-- Alert BC -->
+            <rect x="390" y="262" width="160" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="470" y="282" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Alert BC</text>
+            <text x="470" y="298" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">임계값 초과 알림</text>
+            <text x="470" y="310" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">위치 기반 Push</text>
+            <!-- Stats BC -->
+            <rect x="570" y="262" width="150" height="52" rx="5" fill="#1e1030" stroke="#534AB7" stroke-width="1"/>
+            <text x="645" y="282" text-anchor="middle" font-size="11" fill="#AFA9EC" font-weight="600" font-family="JetBrains Mono,monospace">Stats BC</text>
+            <text x="645" y="298" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">주간/월간 통계</text>
+            <text x="645" y="310" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="JetBrains Mono,monospace">JPQL 집계</text>
+            <!-- Bottom arrows -->
+            <line x1="270" y1="314" x2="240" y2="356" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <line x1="470" y1="314" x2="420" y2="356" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <!-- JPA -->
+            <rect x="120" y="356" width="200" height="36" rx="5" fill="#0d1f2d" stroke="#185FA5" stroke-width="1"/>
+            <text x="220" y="374" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="600" font-family="JetBrains Mono,monospace">JPA Repository</text>
+            <text x="220" y="386" text-anchor="middle" font-size="10" fill="#4a5068" font-family="JetBrains Mono,monospace">JPQL · Pageable</text>
+            <!-- MySQL -->
+            <line x1="220" y1="392" x2="220" y2="406" stroke="#2e2e45" stroke-width="1" marker-end="url(#a3)"/>
+            <rect x="120" y="406" width="200" height="18" rx="4" fill="#1a1a2e" stroke="#2e2e45" stroke-width="1"/>
+            <text x="220" y="419" text-anchor="middle" font-size="10" fill="#8892a4" font-family="JetBrains Mono,monospace">MySQL</text>
+            <!-- ControllerAdvice -->
+            <rect x="340" y="356" width="200" height="36" rx="5" fill="#2d2000" stroke="#854F0B" stroke-width="1"/>
+            <text x="440" y="374" text-anchor="middle" font-size="11" fill="#EF9F27" font-weight="600" font-family="JetBrains Mono,monospace">@ControllerAdvice</text>
+            <text x="440" y="386" text-anchor="middle" font-size="10" fill="#633806" font-family="JetBrains Mono,monospace">글로벌 예외 처리</text>
+          </svg>
+        </div>
+
+        <div class="sub-title">ERD</div>
+        <div class="erd-box"><span style="color:var(--accent)">Member</span> ──── <span style="color:var(--accent2)">SymptomLog</span> ──── <span style="color:var(--accent2)">SymptomDetail</span>
+   │
+   ├──── <span style="color:var(--accent2)">AlertSetting</span> ──── <span style="color:var(--accent)">PollenStation</span>
+   │                              │
+   └──── <span style="color:var(--accent2)">PollenRecord</span> ──────┘</div>
+
+        <div class="paar-section-title">Key Implementations (PAAR)</div>
+        <div class="paar-list">
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">CACHE</span>꽃가루 데이터 Redis TTL 캐싱 — API 호출 최적화</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>매 요청마다 외부 기상청 API 호출로 응답 지연 및 API 호출 한도 소진 위험</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>꽃가루 데이터는 1시간 주기 갱신 — 매 요청 호출은 불필요한 외부 의존성 증가</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span>Redis에 지역별 꽃가루 데이터 TTL 1시간 캐싱, <code>@Scheduled</code>로 정시 선제 갱신</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>외부 API 호출 <span class="result-highlight">95% 이상 절감</span>, 평균 응답 시간 대폭 단축</div>
+            </div>
+          </div>
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">ALERT</span>위치 기반 꽃가루 임계값 알림 — 개인화 설정</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>동일 임계값 적용 시 알러지 민감도가 다른 사용자에게 과다/과소 알림 발생</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>사용자별 관심 꽃가루 종류 및 민감도 임계값이 상이 — 일괄 정책 부적합</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span><code>AlertSetting</code> 엔티티로 꽃가루 종류·지역·임계값 개인화, <code>@Scheduled</code> 배치로 초과 감지 후 Push 발송</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>사용자별 <span class="result-highlight">맞춤 알림 정확도 향상</span>, 불필요한 알림 노이즈 제거</div>
+            </div>
+          </div>
+          <div class="paar-item">
+            <div class="paar-title-bar"><span class="feature-tag">STATS</span>증상-꽃가루 상관관계 통계 — 주간/월간 집계</div>
+            <div class="paar-steps">
+              <div class="paar-step"><span class="paar-step-label label-p">PROBLEM</span>사용자가 자신의 증상과 꽃가루 농도 간 관계를 직관적으로 파악하기 어려움</div>
+              <div class="paar-step"><span class="paar-step-label label-a1">ANALYZE</span>증상 로그와 꽃가루 기록을 날짜 기준으로 조인·집계하는 JPQL 쿼리 최적화 필요</div>
+              <div class="paar-step"><span class="paar-step-label label-a2">ACTION</span>JPQL 날짜 집계 쿼리 작성, DTO 프로젝션으로 주간/월간 평균 꽃가루 농도·증상 심각도 반환</div>
+              <div class="paar-step"><span class="paar-step-label label-r">RESULT</span>증상-꽃가루 <span class="result-highlight">상관관계 시각화 데이터 제공</span>, 사용자 행동 패턴 파악 지원</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="links-row">
+          <a class="github-link" href="https://github.com/shyuk113/pollen-allergy-tracker" target="_blank">⌥ GitHub 바로가기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 꽃가루 알러지 앱 인터랙티브 데모 -->
+  <section id="pollen">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <span class="section-title">Pollen Allergy App</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="pollen-app reveal">
+      <div class="pollen-header">
+        <div class="pollen-header-left">
+          <span class="pollen-logo">🌿</span>
+          <div>
+            <div class="pollen-title">꽃가루 알러지 트래커</div>
+            <div class="pollen-subtitle">// 실시간 꽃가루 농도 · 증상 기록</div>
+          </div>
+        </div>
+        <div class="pollen-location">
+          <span class="pollen-loc-dot"></span>
+          <span id="pollenCity">수원시, 경기도</span>
+        </div>
+      </div>
+
+      <!-- 오늘의 꽃가루 현황 -->
+      <div class="pollen-grid">
+        <div class="pollen-card-item" data-level="high">
+          <div class="pollen-card-label">참나무</div>
+          <div class="pollen-card-gauge">
+            <div class="pollen-gauge-bar" style="--fill:82%;--color:#f87171;"></div>
+          </div>
+          <div class="pollen-card-value" style="color:#f87171;">매우 높음</div>
+        </div>
+        <div class="pollen-card-item" data-level="medium">
+          <div class="pollen-card-label">소나무</div>
+          <div class="pollen-card-gauge">
+            <div class="pollen-gauge-bar" style="--fill:55%;--color:#fbbf24;"></div>
+          </div>
+          <div class="pollen-card-value" style="color:#fbbf24;">보통</div>
+        </div>
+        <div class="pollen-card-item" data-level="low">
+          <div class="pollen-card-label">자작나무</div>
+          <div class="pollen-card-gauge">
+            <div class="pollen-gauge-bar" style="--fill:24%;--color:#00ff88;"></div>
+          </div>
+          <div class="pollen-card-value" style="color:#00ff88;">낮음</div>
+        </div>
+        <div class="pollen-card-item" data-level="medium">
+          <div class="pollen-card-label">잡초류</div>
+          <div class="pollen-card-gauge">
+            <div class="pollen-gauge-bar" style="--fill:63%;--color:#fbbf24;"></div>
+          </div>
+          <div class="pollen-card-value" style="color:#fbbf24;">높음</div>
+        </div>
+      </div>
+
+      <!-- 알림 배너 -->
+      <div class="pollen-alert-banner">
+        <span class="pollen-alert-icon">⚠</span>
+        <span>참나무 꽃가루 <strong>위험 수준</strong> — 외출 시 마스크 착용 권장</span>
+        <span class="pollen-alert-time">오늘 09:00 기준</span>
+      </div>
+
+      <!-- 증상 기록 -->
+      <div class="pollen-section-title">오늘의 증상 기록</div>
+      <div class="pollen-symptom-row">
+        <button class="symptom-btn active" onclick="toggleSymptom(this)">😤 코막힘</button>
+        <button class="symptom-btn active" onclick="toggleSymptom(this)">💧 콧물</button>
+        <button class="symptom-btn" onclick="toggleSymptom(this)">👁 눈 가려움</button>
+        <button class="symptom-btn" onclick="toggleSymptom(this)">🤧 재채기</button>
+        <button class="symptom-btn" onclick="toggleSymptom(this)">😮‍💨 숨 답답함</button>
+        <button class="symptom-btn" onclick="toggleSymptom(this)">🤒 두통</button>
+      </div>
+      <div class="pollen-severity-row">
+        <span class="severity-label">심각도</span>
+        <div class="severity-dots">
+          <span class="severity-dot active" onclick="setSeverity(1)"></span>
+          <span class="severity-dot active" onclick="setSeverity(2)"></span>
+          <span class="severity-dot active" onclick="setSeverity(3)"></span>
+          <span class="severity-dot" onclick="setSeverity(4)"></span>
+          <span class="severity-dot" onclick="setSeverity(5)"></span>
+        </div>
+        <span class="severity-text" id="severityText">3 / 5</span>
+      </div>
+      <button class="pollen-save-btn" onclick="saveSymptom()">✓ 증상 저장</button>
+      <div class="pollen-save-msg" id="pollenSaveMsg"></div>
+
+      <!-- 주간 통계 차트 -->
+      <div class="pollen-section-title" style="margin-top:24px;">주간 꽃가루 농도 추이</div>
+      <div class="pollen-chart">
+        <div class="chart-bars">
+          <div class="chart-bar-wrap"><div class="chart-bar" style="--h:45%;--c:#fbbf24;"></div><span class="chart-day">월</span></div>
+          <div class="chart-bar-wrap"><div class="chart-bar" style="--h:60%;--c:#f87171;"></div><span class="chart-day">화</span></div>
+          <div class="chart-bar-wrap"><div class="chart-bar" style="--h:75%;--c:#f87171;"></div><span class="chart-day">수</span></div>
+          <div class="chart-bar-wrap"><div class="chart-bar" style="--h:82%;--c:#f87171;"></div><span class="chart-day">목</span></div>
+          <div class="chart-bar-wrap chart-bar-today"><div class="chart-bar" style="--h:82%;--c:#f87171;"></div><span class="chart-day">오늘</span></div>
+          <div class="chart-bar-wrap"><div class="chart-bar" style="--h:65%;--c:#fbbf24; opacity:0.4;"></div><span class="chart-day">내일</span></div>
+          <div class="chart-bar-wrap"><div class="chart-bar" style="--h:48%;--c:#fbbf24; opacity:0.4;"></div><span class="chart-day">모레</span></div>
+        </div>
+        <div class="chart-legend"><span style="color:#f87171">● 높음</span><span style="color:#fbbf24">● 보통</span><span style="color:#00ff88">● 낮음</span><span style="color:#4a5068">● 예측</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 트러블슈팅 -->
   <section id="troubleshooting">
     <div class="section-header reveal">
-      <span class="section-num">03</span>
+      <span class="section-num">04</span>
       <span class="section-title">Trouble Shooting</span>
       <div class="section-line"></div>
     </div>
@@ -583,6 +898,32 @@
     });
   }, { threshold: 0.06 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  function toggleSymptom(btn) {
+    btn.classList.toggle('active');
+  }
+
+  let currentSeverity = 3;
+  function setSeverity(n) {
+    currentSeverity = n;
+    document.querySelectorAll('.severity-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i < n);
+    });
+    document.getElementById('severityText').textContent = n + ' / 5';
+  }
+
+  function saveSymptom() {
+    const active = [...document.querySelectorAll('.symptom-btn.active')].map(b => b.textContent.trim());
+    const msg = document.getElementById('pollenSaveMsg');
+    if (active.length === 0) {
+      msg.style.color = '#f87171';
+      msg.textContent = '⚠ 증상을 하나 이상 선택하세요.';
+      return;
+    }
+    msg.style.color = 'var(--accent)';
+    msg.textContent = `✓ 저장 완료 — ${active.join(', ')} (심각도 ${currentSeverity}/5)`;
+    setTimeout(() => { msg.textContent = ''; }, 3000);
+  }
 </script>
 </body>
 </html>

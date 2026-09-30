@@ -23,6 +23,7 @@
   h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5; }
   h3 { font-size: 19px; font-weight: 700; margin: 40px 0 4px; }
   h4 { font-size: 16px; font-weight: 700; margin: 28px 0 8px; }
+  h5 { font-size: 14px; font-weight: 700; color: #444; margin: 20px 0 6px; }
   p { margin: 8px 0; }
   ul { margin: 8px 0; padding-left: 22px; }
   li { margin-bottom: 4px; }
@@ -48,6 +49,19 @@
     h1 { font-size: 26px; }
     table { min-width: 480px; }
   }
+
+  figure { margin: 20px 0 24px; }
+  .fig-scroll { overflow-x: auto; border: 1px solid #e5e5e5; border-radius: 4px; }
+  .dg { display: block; width: 100%; min-width: 600px; height: auto; background: #fff; }
+  .dg text { font-family: 'Noto Sans KR', sans-serif; font-size: 13px; fill: #1f1f1f; }
+  .dg text.b { font-weight: 700; }
+  .dg text.sm { font-size: 11.5px; fill: #666; }
+  .dg .box { fill: #fff; stroke: #333; stroke-width: 1.2; }
+  .dg .box.alt { fill: #efefef; }
+  .dg .ln { stroke: #555; stroke-width: 1.2; fill: none; }
+  .dg .dash { stroke-dasharray: 4 3; }
+  .dg .lock { fill: #333; }
+  figcaption { font-size: 13px; color: #777; text-align: center; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -71,6 +85,11 @@
   <h3>1. [홈쇼핑] 결제 승인 시 재고 차감 — 비관적 락에서 조건부 원자적 UPDATE로</h3>
   <p class="meta">홈쇼핑 이커머스 플랫폼 · home-shopping-backend</p>
   <p class="summary">한 줄 요약: 비관적 락의 대기 시간이 트래픽 증가에 따라 병목을 유발하여, 락 없이 SQL 조건절로 정합성을 보장하는 조건부 원자적 UPDATE로 전환하고 k6 테스트 기준 p95 응답시간을 78.6% 단축했습니다.</p>
+  <figure>
+    <div class="fig-scroll"><svg class="dg" viewBox="0 0 720 240" role="img" aria-label="비관적 락과 조건부 원자적 UPDATE의 락 보유 구간 비교"><defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#555"/></marker></defs><text class="b" x="16" y="72">비관적 락</text><rect class="box alt" x="150" y="50" width="156" height="36" rx="4"/><text class="sm" x="228.0" y="72.0" text-anchor="middle">SELECT … FOR UPDATE</text><rect class="box" x="312" y="50" width="84" height="36" rx="4"/><text class="sm" x="354.0" y="72.0" text-anchor="middle">재고 확인</text><rect class="box" x="402" y="50" width="104" height="36" rx="4"/><text class="sm" x="454.0" y="72.0" text-anchor="middle">비즈니스 로직</text><rect class="box" x="512" y="50" width="76" height="36" rx="4"/><text class="sm" x="550.0" y="72.0" text-anchor="middle">UPDATE</text><rect class="box" x="594" y="50" width="96" height="36" rx="4"/><text class="sm" x="642.0" y="72.0" text-anchor="middle">COMMIT</text><rect class="lock" x="150" y="94" width="540" height="8" rx="2"/><text class="sm" x="150" y="122">행 락 보유: 트랜잭션 전체 → 뒤 요청이 줄을 서고 커넥션도 묶임 (p95 6.93s)</text><text class="b" x="16" y="164">조건부</text><text class="b" x="16" y="182">원자적 UPDATE</text><rect class="box" x="150" y="150" width="150" height="36" rx="4"/><text class="sm" x="225.0" y="172.0" text-anchor="middle">결제 확정 로직</text><rect class="box alt" x="306" y="150" width="264" height="36" rx="4"/><text class="sm" x="438.0" y="172.0" text-anchor="middle">UPDATE … WHERE quantity &gt;= :q</text><rect class="box" x="576" y="150" width="114" height="36" rx="4"/><text class="sm" x="633.0" y="172.0" text-anchor="middle">COMMIT</text><rect class="lock" x="306" y="194" width="264" height="8" rx="2"/><text class="sm" x="150" y="222">행 락 보유: UPDATE 한 문장 · 영향 행 0이면 재고 부족 (p95 1.48s)</text><line class="ln dash" x1="16" y1="134" x2="704" y2="134"/></svg></div>
+    <figcaption>검은 막대 = 행 락을 잡고 있는 구간. 락 종류가 아니라 보유 시간이 처리량을 결정한다.</figcaption>
+  </figure>
+
 
   <h4>문제</h4>
   <ul>
@@ -109,30 +128,234 @@
   <h3>2. [홈쇼핑] 선착순 쿠폰 발급 — Redis Lua 원자 판정 + Kafka 비동기 저장</h3>
   <p class="meta">홈쇼핑 이커머스 플랫폼 · home-shopping-backend</p>
   <p class="summary">한 줄 요약: 중복 발급은 방지하나 전체 수량 초과를 제어하지 못하던 기존 구조를, 판정 로직 전체를 Redis Lua 스크립트로 원자화하고 DB 저장을 Kafka 기반 비동기 구조로 분리하여 해결했습니다.</p>
+  <figure>
+    <div class="fig-scroll"><svg class="dg" viewBox="0 0 720 224" role="img" aria-label="선착순 쿠폰 발급 흐름: Redis Lua 판정, Kafka, Consumer, DB"><defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#555"/></marker></defs><rect class="box" x="16" y="50" width="96" height="56" rx="4"/><text class="b" x="64.0" y="82.0" text-anchor="middle">클라이언트</text><rect class="box alt" x="150" y="50" width="150" height="56" rx="4"/><text class="b" x="225.0" y="74.0" text-anchor="middle">Redis Lua 스크립트</text><text class="sm" x="225.0" y="90.0" text-anchor="middle">기간·중복·수량 판정</text><rect class="box" x="338" y="50" width="110" height="56" rx="4"/><text class="b" x="393.0" y="74.0" text-anchor="middle">Kafka</text><text class="sm" x="393.0" y="90.0" text-anchor="middle">coupon-issue</text><rect class="box" x="486" y="50" width="100" height="56" rx="4"/><text class="b" x="536.0" y="74.0" text-anchor="middle">Consumer</text><text class="sm" x="536.0" y="90.0" text-anchor="middle">멱등 저장</text><rect class="box" x="614" y="50" width="100" height="56" rx="4"/><text class="b" x="664.0" y="74.0" text-anchor="middle">DB</text><text class="sm" x="664.0" y="90.0" text-anchor="middle">member_coupon</text><path class="ln" d="M112 78H148" marker-end="url(#ar2)"/><path class="ln" d="M300 78H336" marker-end="url(#ar2)"/><path class="ln" d="M448 78H484" marker-end="url(#ar2)"/><path class="ln" d="M586 78H612" marker-end="url(#ar2)"/><path class="ln dash" d="M393 50V24H225V48" marker-end="url(#ar2)"/><text class="sm" x="309" y="18" text-anchor="middle">발행 실패 → SREM 보상</text><path class="ln" d="M225 106V150H64V108" marker-end="url(#ar2)"/><text class="sm" x="144" y="168" text-anchor="middle">즉시 202 응답 · 요청 경로 DB 접근 0회</text><path class="ln dash" d="M536 106V166" marker-end="url(#ar2)"/><text class="sm" x="528" y="140" text-anchor="end">3회 재시도 실패</text><rect class="box" x="466" y="168" width="140" height="40" rx="4"/><text class="sm" x="536.0" y="192.0" text-anchor="middle">coupon-issue.DLT</text><text class="sm" x="664" y="128" text-anchor="middle">유니크 제약 =</text><text class="sm" x="664" y="144" text-anchor="middle">중복 메시지 무시</text></svg></div>
+    <figcaption>판정은 Redis Lua 한 번으로 끝나고, DB 저장은 Kafka 뒤에서 비동기로 처리된다.</figcaption>
+  </figure>
 
-  <h4>해결 방안</h4>
+
+  <h4>문제</h4>
+  <p>처음 구조는 "Redis로 거르고 DB 유니크 제약으로 최종 보장"이었습니다.</p>
+<pre><code>[요청] → Redis SADD coupon:{id}:members   (중복 확인)
+      → Redis INCR coupon:{id}:count      (수량 카운트)
+      → DB INSERT member_coupon           ★ (member_id, coupon_id) 유니크 제약</code></pre>
   <ul>
-    <li><strong>Redis Lua 스크립트 적용:</strong> 기간·중복·수량 판정을 단일 Lua 스크립트 내에서 실행하여 원자성을 완전 보장했습니다.</li>
-    <li><strong>카운터 연산 단순화:</strong> 별도 카운터 대신 SCARD(Set 크기)로 발급 수를 판정하여 수량 불일치 가능성을 원천 차단했습니다.</li>
-    <li><strong>Kafka 기반 비동기 처리:</strong> 요청 경로에서의 DB 조회를 0회로 단순화하고, Kafka 메시지 큐를 거쳐 Consumer가 비동기 멱등 저장을 수행하도록 설계했습니다.</li>
+    <li><strong>유니크 제약의 한계:</strong> <code>(member_id, coupon_id)</code> 유니크 제약은 "한 사용자가 2장 받는 것"만 막습니다. "선착순 100명"처럼 전체 수량을 제한하는 문제는 제약으로 표현할 수 없습니다.</li>
+    <li><strong>비원자성:</strong> <code>SADD</code>와 <code>INCR</code>이 별도 명령이라 그 사이에 다른 요청이 끼어들 수 있었습니다.</li>
+    <li><strong>요청 경로의 DB 의존:</strong> 매 요청마다 쿠폰 조회와 INSERT가 동기적으로 일어나, 트래픽이 몰리면 DB 커넥션이 병목이 됩니다.</li>
   </ul>
 
-  <h3>3. [위드도그] FK 제약 조건 위반 및 연관 엔티티 삭제 제어</h3>
+  <h4>해결</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>구성</th><th>역할</th></tr>
+      <tr><td>Redis</td><td>선착순 판정의 기준. 쿠폰 메타(총수량·기간)도 Redis에 올려 DB 조회 제거</td></tr>
+      <tr><td>Lua 스크립트</td><td>판정 과정 전체를 원자적으로 처리. 실행 중 다른 명령이 끼어들 수 없음</td></tr>
+      <tr><td>Kafka</td><td>요청이 몰리는 순간의 DB 부하를 분리해 순서대로 처리</td></tr>
+    </table>
+  </div>
+<pre><code>-- KEYS[1] = coupon:{id}:meta, KEYS[2] = coupon:{id}:members
+local meta = redis.call('HMGET', KEYS[1], 'total', 'start', 'end')
+if not meta[1] then return -3 end                                            -- 쿠폰 없음
+local now = tonumber(ARGV[2])
+if now &lt; tonumber(meta[2]) or now &gt; tonumber(meta[3]) then return -2 end   -- 기간 아님
+if redis.call('SISMEMBER', KEYS[2], ARGV[1]) == 1 then return -1 end       -- 중복
+if redis.call('SCARD', KEYS[2]) &gt;= tonumber(meta[1]) then return 0 end     -- 소진
+redis.call('SADD', KEYS[2], ARGV[1])
+return 1                                                                     -- 성공</code></pre>
+  <ul>
+    <li><strong>카운터 제거:</strong> 발급 수를 <code>SCARD</code>(Set 크기)로 계산해 별도 카운터와 Set이 어긋날 여지를 없앴습니다.</li>
+    <li><strong>키 해시태그:</strong> <code>{id}</code>를 써서 Redis Cluster에서도 두 키가 같은 슬롯에 놓이게 했습니다.</li>
+    <li><strong>메타 적재 시점:</strong> 쿠폰 생성 트랜잭션의 <code>afterCommit</code>에서만 Redis에 올려, 롤백된 쿠폰이 Redis에 남는 것을 막았습니다.</li>
+    <li><strong>발행 실패 보상:</strong> Kafka 발행이 실패하면 <code>SREM</code>으로 Redis 자리를 반납합니다.</li>
+    <li><strong>Consumer 멱등성:</strong> Kafka는 최소 1회 전달이라 같은 메시지가 다시 올 수 있습니다. 유니크 제약 위반은 "이미 처리됨"으로 보고 무시합니다. 유니크 제약의 역할이 "수량 제어"에서 "멱등성 보장"으로 바뀐 셈입니다.</li>
+    <li><strong>장애 격리:</strong> <code>DefaultErrorHandler</code>로 1초 간격 3회 재시도 후 <code>coupon-issue.DLT</code>로 보냅니다.</li>
+  </ul>
+
+  <h4>트레이드오프</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>최종 일관성</td><td>응답(202) 시점과 DB 저장 시점 사이에 짧은 지연이 있어 "내 쿠폰함"에 즉시 보이지 않을 수 있음</td></tr>
+      <tr><td>Redis가 판정의 기준</td><td>Redis 장애·유실 시 발급 상태를 DB에서 재구성하는 절차가 필요</td></tr>
+      <tr><td>인프라 복잡도</td><td>Kafka 운영 부담이 추가됨. 대신 DB가 트래픽 피크에서 분리됨</td></tr>
+    </table>
+  </div>
+
+  <h4>결과</h4>
+  <ul>
+    <li>판정이 단일 Lua 스크립트 안에서 끝나 총수량 초과 발급이 구조적으로 불가능해졌습니다.</li>
+    <li>발급 API의 요청 경로에서 DB 접근이 0회가 되었습니다.</li>
+    <li>k6로 100장 쿠폰에 서로 다른 유저 1,000명이 동시에 요청한 결과, 초과·누락 없이 정확히 100장이 발급되었습니다(정합성 100%). 평균 응답 1.5s, p95 2.06s를 측정하고 병목 원인을 분석했습니다.</li>
+  </ul>
+
+  <!-- 3 -->
+
+<h3>3. [위드도그] FK 제약 조건 위반 및 연관 엔티티 삭제 제어</h3>
   <p class="meta">위드도그 (WithDog) · with-dog</p>
   <p class="summary">한 줄 요약: 게시물 삭제 시 연관된 자식 엔티티(알림·댓글·좋아요) 존재로 인한 Foreign Key 제약 위반 문제를, 의존성 그래프의 리프(Leaf) 노드부터 명시적으로 제거하는 서비스 레이어 로직으로 해결했습니다.</p>
+  <figure>
+    <div class="fig-scroll"><svg class="dg" viewBox="0 0 720 220" role="img" aria-label="게시물 FK 의존성 그래프와 삭제 순서"><defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#555"/></marker></defs><rect class="box" x="40" y="20" width="150" height="40" rx="4"/><text class="b" x="115.0" y="44.0" text-anchor="middle">② Reply (대댓글)</text><rect class="box alt" x="40" y="100" width="150" height="40" rx="4"/><text class="b" x="115.0" y="124.0" text-anchor="middle">① Notification</text><rect class="box" x="300" y="60" width="140" height="40" rx="4"/><text class="b" x="370.0" y="84.0" text-anchor="middle">② Comment</text><rect class="box" x="300" y="160" width="140" height="40" rx="4"/><text class="b" x="370.0" y="184.0" text-anchor="middle">② PostLike</text><rect class="box" x="560" y="110" width="120" height="40" rx="4"/><text class="b" x="620.0" y="134.0" text-anchor="middle">③ Post</text><path class="ln" d="M190 40L298 74" marker-end="url(#ar3)"/><path class="ln" d="M190 120L298 88" marker-end="url(#ar3)"/><path class="ln" d="M440 80L558 122" marker-end="url(#ar3)"/><path class="ln" d="M440 180L558 138" marker-end="url(#ar3)"/><text class="sm" x="236" y="46">parent_id</text><text class="sm" x="236" y="126">comment_id</text><text class="sm" x="490" y="92">post_id</text><text class="sm" x="490" y="176">post_id</text><text class="sm" x="115" y="78" text-anchor="middle">cascade REMOVE</text></svg></div>
+    <figcaption>화살표 = FK 참조 방향. 삭제는 반대로 ① → ② → ③, 의존성 그래프의 리프부터.</figcaption>
+  </figure>
 
-  <h3>4. [위드도그] 래퍼 타입 언박싱 NPE 및 예외 처리 기준 수립</h3>
+
+  <h4>문제</h4>
+  <ul>
+    <li>댓글·대댓글·좋아요가 달린 게시물을 삭제하면 <code>DataIntegrityViolationException</code>이 발생했습니다.</li>
+    <li><code>Comment</code>, <code>PostLike</code>는 <code>post_id</code>를, 대댓글은 원본 댓글의 <code>parent_id</code>를, <code>Notification</code>은 <code>comment_id</code>를 NOT NULL FK로 참조하고 있었습니다.</li>
+    <li>기존 <code>deletePost()</code>는 <code>postRepository.delete(post)</code>만 호출해, 부모를 먼저 지우려다 자식 행의 FK에 막혔습니다.</li>
+  </ul>
+
+  <h4>해결</h4>
+  <p>삭제 순서를 "의존성 그래프의 리프부터"라는 원칙에 맞춰 서비스 계층에서 명시적으로 정리했습니다. (Notification → Comment·Reply·PostLike → Post)</p>
+<pre><code>@Transactional
+public void deletePost(Long postId, Long userId) {
+    Post post = ...; // 작성자 검증 생략
+
+    // 1) 가장 바깥 리프: 댓글/대댓글에 걸린 알림
+    List&lt;Comment&gt; topLevelComments = commentRepository.findByPostIdAndParentIsNull(postId);
+    topLevelComments.forEach(notificationService::deleteNotificationsForComment);
+
+    // 2) Post를 참조하는 자식들
+    postLikeRepository.deleteByPostId(postId);
+    commentRepository.deleteByPostId(postId); // 대댓글은 replies의 cascade REMOVE로 함께 정리
+
+    // 3) 루트
+    postRepository.delete(post);
+}</code></pre>
+  <ul>
+    <li>대댓글 → 원본 댓글 FK는 <code>Comment.replies</code>에 <code>cascade = REMOVE, orphanRemoval = true</code>를 두어 부모 댓글과 함께 지워지게 했습니다.</li>
+    <li><code>deleteNotificationsForComment()</code>는 원본 댓글과 그 대댓글의 알림을 함께 지우며, 댓글 단건 삭제도 같은 메서드를 재사용합니다.</li>
+  </ul>
+
+  <h4>트레이드오프 — 왜 Post에 cascade를 걸지 않았나</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>방법</th><th>장점</th><th>한계</th></tr>
+      <tr><td>Post에 <code>@OneToMany(cascade = REMOVE)</code></td><td>코드가 짧음</td><td>Notification은 Post와 양방향 관계가 없어 cascade로 지워지지 않음. 결국 수동 정리가 섞임</td></tr>
+      <tr><td><strong>리포지토리 삭제 메서드로 명시적 정리 (채택)</strong></td><td>무엇이 함께 지워지는지, 삭제 순서가 코드에 드러남</td><td>자식 엔티티가 늘면 서비스 코드도 함께 수정해야 함</td></tr>
+    </table>
+  </div>
+  <p>Notification을 어차피 수동으로 지워야 한다면, Comment·PostLike도 같은 방식으로 일관되게 처리하는 편이 가독성과 유지보수에 유리하다고 판단했습니다.</p>
+
+  <h4>결과</h4>
+  <ul>
+    <li>댓글·대댓글·좋아요·알림이 모두 달린 게시물을 삭제하는 통합 테스트를 추가해 통과를 확인했습니다.</li>
+    <li>게시물 삭제와 댓글 삭제가 같은 알림 정리 메서드를 쓰도록 통일되었습니다.</li>
+  </ul>
+  <p class="note">배운 점: 연관관계가 추가될 때마다 "이 엔티티를 지울 때 누가 나를 참조하는가"를 먼저 확인하는 습관이 생겼습니다.</p>
+
+  <!-- 4 -->
+
+<h3>4. [위드도그] 래퍼 타입 언박싱 NPE 및 예외 처리 기준 수립</h3>
   <p class="meta">위드도그 (WithDog) · with-dog</p>
   <p class="summary">한 줄 요약: Nullable 래퍼 타입의 자동 언박싱으로 인해 발생하는 NPE 예외를 "값의 출처"와 "비즈니스 의미"에 따라 3단계 방어 체계로 정립했습니다.</p>
+  <figure>
+    <div class="fig-scroll"><svg class="dg" viewBox="0 0 720 256" role="img" aria-label="값의 출처에 따른 NPE 방어 수단 결정 트리"><defs><marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#555"/></marker></defs><rect class="box" x="250" y="16" width="220" height="40" rx="4"/><text class="b" x="360.0" y="40.0" text-anchor="middle">래퍼 타입 값 (null 가능)</text><rect class="box" x="110" y="96" width="200" height="40" rx="4"/><text class="b" x="210.0" y="120.0" text-anchor="middle">내부 도메인 값</text><rect class="box" x="470" y="96" width="200" height="40" rx="4"/><text class="b" x="570.0" y="120.0" text-anchor="middle">외부 입력 (HTTP 바디)</text><path class="ln" d="M320 56L214 94" marker-end="url(#ar4)"/><path class="ln" d="M400 56L566 94" marker-end="url(#ar4)"/><text class="sm" x="360" y="84" text-anchor="middle">값의 출처는?</text><rect class="box alt" x="16" y="196" width="200" height="44" rx="4"/><text class="b" x="116.0" y="214.0" text-anchor="middle">기본값 반환</text><text class="sm" x="116.0" y="230.0" text-anchor="middle">예: 진행 중 산책 거리 0</text><rect class="box alt" x="236" y="196" width="200" height="44" rx="4"/><text class="b" x="336.0" y="214.0" text-anchor="middle">비즈니스 예외</text><text class="sm" x="336.0" y="230.0" text-anchor="middle">400 + LOCATION_REQUIRED</text><rect class="box alt" x="480" y="196" width="220" height="44" rx="4"/><text class="b" x="590.0" y="214.0" text-anchor="middle">경계에서 차단</text><text class="sm" x="590.0" y="230.0" text-anchor="middle">@Valid + @NotNull</text><path class="ln" d="M180 136L120 194" marker-end="url(#ar4)"/><path class="ln" d="M240 136L332 194" marker-end="url(#ar4)"/><path class="ln" d="M570 136L588 194" marker-end="url(#ar4)"/><text class="sm" x="110" y="170" text-anchor="middle">null이 정상</text><text class="sm" x="300" y="162">null이면 진행 불가</text></svg></div>
+    <figcaption>같은 NPE라도 값의 출처에 따라 방어 수단이 달라진다.</figcaption>
+  </figure>
 
-  <h3>5. [moamoa] 하네스 기반 AI 에이전트 개발 파이프라인 구축</h3>
+
+  <h4>문제</h4>
+  <p><code>Double</code> / <code>Integer</code> / <code>Long</code> 같은 래퍼 타입이 원시 타입 변수나 파라미터로 들어가는 순간 자동 언박싱이 일어나고, 값이 null이면 NPE가 발생합니다. 같은 원인의 NPE가 세 곳에서 나왔습니다.</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>사례</th><th>발생 지점</th><th>원인</th></tr>
+      <tr><td>1. 산책 응답</td><td><code>WalkResponse.from()</code></td><td>진행 중인 산책은 <code>distanceKm</code>이 null인데 record의 <code>double</code> 필드로 언박싱</td></tr>
+      <tr><td>2. 산책 코스 추천</td><td><code>RecommendService.recommend()</code></td><td>위치를 등록하지 않은 유저의 위도·경도를 <code>double</code>에 대입</td></tr>
+      <tr><td>3. 강아지 건강 상태 수정</td><td><code>UpdateHealthConditionsRequest</code></td><td>요청 바디에 값이 빠지면 null 리스트가 서비스까지 전달</td></tr>
+    </table>
+  </div>
+  <p>사용자 입장에서는 세 경우 모두 원인을 알 수 없는 500 에러였습니다.</p>
+
+  <h4>해결</h4>
+  <h5>사례 1 — null이 정상 상태인 도메인 값: 기본값</h5>
+<pre><code>double distanceKm = walk.getDistanceKm() == null ? 0 : walk.getDistanceKm();</code></pre>
+  <h5>사례 2 — null이면 진행할 수 없는 도메인 값: 명확한 비즈니스 예외</h5>
+<pre><code>if (user.getLatitude() == null || user.getLongitude() == null) {
+    throw new BusinessException(ErrorCode.LOCATION_REQUIRED); // 400 + 안내 메시지
+}</code></pre>
+  <h5>사례 3 — 신뢰할 수 없는 외부 입력: 시스템 경계에서 Bean Validation</h5>
+<pre><code>public record UpdateHealthConditionsRequest(@NotNull List&lt;String&gt; healthConditions) {}
+
+@PatchMapping("/{id}/health-conditions")
+public ResponseEntity&lt;Void&gt; updateHealthConditions(@PathVariable Long id,
+        @Valid @RequestBody UpdateHealthConditionsRequest request, ...) { ... }</code></pre>
+  <div class="table-wrap">
+    <table>
+      <tr><th>값의 출처</th><th>방어 수단</th><th>이유</th></tr>
+      <tr><td>내부 도메인, null이 정상 상태</td><td>null 체크 후 기본값</td><td>"아직 측정되지 않음"은 오류가 아니므로 응답을 막을 이유가 없음</td></tr>
+      <tr><td>내부 도메인, null이면 진행 불가</td><td>null 체크 후 비즈니스 예외</td><td>사용자가 무엇을 해야 하는지(위치 등록) 알려줘야 함</td></tr>
+      <tr><td>외부 입력 (HTTP 바디)</td><td><code>@Valid</code> + <code>@NotNull</code></td><td>도메인 로직에 들어오기 전에 경계에서 원천 차단</td></tr>
+    </table>
+  </div>
+
+  <h4>결과</h4>
+  <ul>
+    <li>세 API 모두 500 대신 의도한 응답(기본값 또는 400 + 안내 메시지)을 반환합니다.</li>
+    <li><code>RecommendServiceTest</code>에 "위치 미등록 시 명확한 예외", "좌표를 직접 전달하면 등록 위치 없이도 추천 성공" 두 케이스를 추가했습니다.</li>
+    <li>이후 같은 기준으로 회원가입·로그인 요청에도 입력 검증을 추가했습니다.</li>
+  </ul>
+  <p class="note">배운 점: 래퍼 타입이 원시 타입으로 흘러가는 지점은 모두 잠재적 NPE 지점으로 보고, 방어 수단은 값의 출처가 결정한다는 기준을 얻었습니다.</p>
+
+  <!-- 5 -->
+
+<h3>5. [moamoa] 하네스 기반 AI 에이전트 개발 파이프라인 구축</h3>
   <p class="meta">moamoa · 2026.09 · moamoa</p>
   <p class="summary">한 줄 요약: 서울 전시·박람회·축제 검색 서비스 moamoa 개발 시, AI 에이전트를 단계별로 배치한 5단계 파이프라인을 설계하여 8일 만에 v0.1부터 v0.3까지 성공적으로 배포했습니다.</p>
+  <figure>
+    <div class="fig-scroll"><svg class="dg" viewBox="0 0 720 224" role="img" aria-label="하네스 개발 파이프라인 5단계와 연기 항목 루프"><defs><marker id="ar5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#555"/></marker></defs><rect class="box" x="16" y="40" width="120" height="72" rx="4"/><text class="b" x="76.0" y="64.0" text-anchor="middle">계획</text><text class="sm" x="76.0" y="80.0" text-anchor="middle">Claude</text><text class="sm" x="76.0" y="96.0" text-anchor="middle">/office-hours</text><rect class="box alt" x="160" y="40" width="120" height="72" rx="4"/><text class="b" x="220.0" y="64.0" text-anchor="middle">검증</text><text class="sm" x="220.0" y="80.0" text-anchor="middle">gstack</text><text class="sm" x="220.0" y="96.0" text-anchor="middle">CEO·Eng 리뷰</text><rect class="box" x="304" y="40" width="120" height="72" rx="4"/><text class="b" x="364.0" y="64.0" text-anchor="middle">구현</text><text class="sm" x="364.0" y="80.0" text-anchor="middle">Codex</text><text class="sm" x="364.0" y="96.0" text-anchor="middle">PR 단위 병합</text><rect class="box" x="448" y="40" width="120" height="72" rx="4"/><text class="b" x="508.0" y="64.0" text-anchor="middle">테스트</text><text class="sm" x="508.0" y="80.0" text-anchor="middle">JUnit</text><text class="sm" x="508.0" y="96.0" text-anchor="middle">Testcontainers</text><rect class="box" x="592" y="40" width="120" height="72" rx="4"/><text class="b" x="652.0" y="64.0" text-anchor="middle">배포</text><text class="sm" x="652.0" y="80.0" text-anchor="middle">Docker</text><text class="sm" x="652.0" y="96.0" text-anchor="middle">Railway</text><path class="ln" d="M136 76H158" marker-end="url(#ar5)"/><path class="ln" d="M280 76H302" marker-end="url(#ar5)"/><path class="ln" d="M424 76H446" marker-end="url(#ar5)"/><path class="ln" d="M568 76H590" marker-end="url(#ar5)"/><rect class="box" x="160" y="160" width="120" height="48" rx="4"/><text class="b" x="220.0" y="180.0" text-anchor="middle">TODOS.md</text><text class="sm" x="220.0" y="196.0" text-anchor="middle">연기 항목 · 근거</text><path class="ln dash" d="M220 112V158" marker-end="url(#ar5)"/><path class="ln dash" d="M160 184H76V114" marker-end="url(#ar5)"/><text class="sm" x="228" y="140">범위 밖 기능 연기</text><text class="sm" x="84" y="146">조건 충족 시 재계획</text><text class="sm" x="508" y="140" text-anchor="middle">8일 · v0.1 → v0.3 · 테스트 실패 0건</text></svg></div>
+    <figcaption>단계마다 다른 도구를 두어 AI가 자기 작업을 스스로 채점하지 않게 했다.</figcaption>
+  </figure>
 
-  <h2>스터디 및 활동</h2>
+
+  <h4>문제</h4>
+  <ul>
+    <li>AI에게 바로 코드를 쓰게 하면 요구사항이 모호한 채로 구현이 진행되고, 범위가 제멋대로 늘거나 줄어듭니다.</li>
+    <li>한 모델이 계획·구현·검증을 모두 맡으면 자기 작업을 스스로 채점하게 되어 설계 결함을 놓치기 쉽습니다.</li>
+    <li>외부 공공 API(서울시 문화행사, KOCCA)를 쓰는 서비스라 데이터 품질·중복·인증키 대기 같은 불확실성이 컸습니다.</li>
+  </ul>
+
+  <h4>해결</h4>
+  <p>개발 흐름을 단계별로 나누고, 단계마다 역할이 다른 도구를 배치했습니다.</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>단계</th><th>도구</th><th>한 일</th></tr>
+      <tr><td>계획</td><td>Claude <code>/office-hours</code></td><td>문제 정의, 타깃 사용자, 최소 범위(MVP) 도출</td></tr>
+      <tr><td>검증</td><td>gstack <code>/plan-ceo-review</code>, <code>/plan-eng-review</code></td><td>CEO 관점(범위·차별화)과 엔지니어 관점(복잡도·리스크)으로 계획 검토. 미룬 항목은 이유와 함께 <code>TODOS.md</code>에 기록</td></tr>
+      <tr><td>구현</td><td>Codex</td><td>확정된 계획대로 구현. <code>codex/*</code> 브랜치 → PR 단위 병합</td></tr>
+      <tr><td>테스트</td><td>JUnit + Testcontainers PostgreSQL</td><td>H2 대체 없이 운영과 같은 DB로 통합 테스트</td></tr>
+      <tr><td>배포</td><td>Docker + Railway</td><td>환경변수 기반 포트·키 설정으로 배포</td></tr>
+    </table>
+  </div>
+  <p>하네스가 실제로 걸러낸 것들:</p>
+  <ul>
+    <li><strong>범위 통제:</strong> 관리자 수동 CRUD, 소스 간 중복 판정, 자유 키워드 알림 등은 리뷰에서 명시적으로 연기하고, 연기 근거와 선행 조건을 남겨 "조용히 빠진 기능"이 없게 했습니다.</li>
+    <li><strong>가정 검증:</strong> "서울시 행사와 KOCCA 공고는 중복이 적다"는 가정을 리뷰에서 지적받아, 실제 샘플로 확인한 뒤 우선순위를 정하도록 조건을 걸었습니다.</li>
+    <li><strong>멱등 수집:</strong> 원본 페이지 URL 해시를 소스 ID로 쓴 업서트로 반복 수집에서도 중복이 생기지 않게 했습니다.</li>
+    <li><strong>배포 디버깅:</strong> gradlew 실행 권한, 래퍼 복사 누락, PORT 환경변수, ENTRYPOINT shell form 문제를 PR 단위로 하나씩 해결했습니다.</li>
+  </ul>
+
+  <h4>결과</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>버전</th><th>날짜</th><th>내용</th><th>테스트</th></tr>
+      <tr><td>v0.3.0.0</td><td>2026-09-22</td><td>KOCCA 공모전·지원사업 연동</td><td>41개 통과</td></tr>
+      <tr><td>v0.2.0.0</td><td>2026-09-22</td><td>방문 안내·지도·한/영 UI·승인형 리뷰·추천·ICS</td><td>34개 통과</td></tr>
+      <tr><td>v0.1.0.0</td><td>2026-09-15</td><td>검색·회원·즐겨찾기·이메일 알림 MVP</td><td>28개 통과</td></tr>
+    </table>
+  </div>
+  <ul>
+    <li>모든 버전에서 실패·오류·건너뛰기 0건으로 테스트를 통과했습니다.</li>
+    <li>실제 서울시 API 초기 수집에서 19,532건을 조회해 대상 분야 159건을 저장했고, 반복 수집 시 신규 0건으로 멱등성을 확인했습니다.</li>
+  </ul>
+  <p class="note">배운 점: AI 협업에서 개발자의 역할은 "코드 작성"보다 단계 설계, 범위 결정, 검증 기준 수립으로 옮겨간다는 것을 확인했습니다.</p>
+
+<h2>스터디 및 활동</h2>
   <ul>
     <li><strong>JPA 딥다이브 스터디 (우수 스터디원 선정):</strong> 영속성 컨텍스트, N+1 문제 DTO Projection 최적화, Batch Size 분석 등 매주 실험 코드 및 SQL 검증 보고서 작성.</li>
-    <li><strong>알고리즘 코딩테스트 스터디 (우수 스터디원 선정):** 시간/공간 복잡도 분석 및 경계값 검증 문서화 진행.</li>
+    <li><strong>알고리즘 코딩테스트 스터디 (우수 스터디원 선정):</strong> 시간/공간 복잡도 분석 및 경계값 검증 문서화 진행.</li>
   </ul>
 
   <h2>자격증 & 기술 스택</h2>
